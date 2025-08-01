@@ -14,6 +14,7 @@ class QuizList(QuizListTemplate):
     #add this line to set the event handler
     self.repeating_panel_1.add_event_handler('x-edit-quiz', self.edit_quiz)
     self.repeating_panel_1.add_event_handler('x-delete-quiz', self.delete_quiz)
+    self.repeating_panel_1.add_event_handler('x-print-quiz', self.print_quiz)
 
   def add_quiz_click(self, **event_args):
     item = {}
@@ -43,6 +44,21 @@ class QuizList(QuizListTemplate):
       anvil.server.call('delete_quiz', quiz)
       #refresh the Data Grid
       self.repeating_panel_1.items = app_tables.quizzes.search()
-  
+
+  def print_quiz(self, quiz, **event_args):
+    if quiz:
+      url = quiz['File']
+      # Call your server fn
+      load = anvil.server.call('fetch_quiz_from_url', url)
+      if load:
+        # For example: print every question to console
+        for q in load['questions']:
+          print(f"Q{q['id']} (Lvl {q['difficultyLevel']}): {q['text']}")
+      else:
+        print("Request failed.")
+
+      
+
+     
 
   

@@ -9,6 +9,11 @@ components:
     name: delete_row
     properties: {icon: 'fa:trash', text: ''}
     type: Button
+  - event_bindings: {click: print_file_click}
+    layout_properties: {}
+    name: print_file
+    properties: {icon: 'fa:eye', text: ''}
+    type: Button
   layout_properties: {column: CXKIFX}
   name: flow_panel_1
   properties: {}
