@@ -1,0 +1,35 @@
+components:
+- components:
+  - components:
+    - data_bindings: []
+      name: repeating_panel_1
+      properties: {item_template: QuizList.RowTemplate1}
+      type: RepeatingPanel
+    layout_properties: {grid_position: 'RZVYQM,WPRSNB'}
+    name: data_grid_1
+    properties:
+      columns:
+      - {data_key: Title, id: LOHLYV, title: Title}
+      - {data_key: File, id: JJBJNV, title: File}
+      - {data_key: Date, id: KSONYD, title: Date}
+      - {data_key: '', id: CXKIFX, title: ''}
+      role: tonal-data-grid
+    type: DataGrid
+  - event_bindings: {click: add_quiz_click}
+    layout_properties: {grid_position: 'DQCBIG,HRHWYW'}
+    name: add_quiz
+    properties: {text: Add Quiz}
+    type: Button
+  layout_properties: {slot: default}
+  name: content_panel
+  properties: {col_widths: '{}'}
+  type: ColumnPanel
+- layout_properties: {slot: nav-right}
+  name: navbar_links
+  properties: {}
+  type: FlowPanel
+container:
+  data_bindings: []
+  properties: {html: '@theme:standard-page.html'}
+  type: HtmlTemplate
+is_package: true

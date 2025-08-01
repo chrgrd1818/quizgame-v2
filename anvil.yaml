@@ -1,12 +1,31 @@
 allow_embedding: false
+db_schema:
+  quizzes:
+    client: search
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: Title
+      type: string
+    - admin_ui: {order: 2, width: 200}
+      name: Date
+      type: datetime
+    - admin_ui: {order: 1, width: 200}
+      name: File
+      type: string
+    server: full
+    title: Quizzes
 dependencies: []
-name: M3 App 1
-package_name: M3_App_1
+name: Quiz2
+package_name: Quiz2
 renamed: true
 runtime_options:
   client_version: '3'
   server_spec: {base: python310-minimal}
   server_version: python3-sandbox
   version: 2
-services: []
-startup_form: Form1
+services:
+- client_config: {}
+  server_config: {}
+  source: /runtime/services/tables.yml
+startup: {module: QuizList, type: form}
+startup_form: null
