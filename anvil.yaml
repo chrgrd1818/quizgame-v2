@@ -27,5 +27,5 @@ services:
 - client_config: {}
   server_config: {}
   source: /runtime/services/tables.yml
-startup: {module: QuizList, type: form}
+startup: {module: QuizHome, type: form}
 startup_form: null

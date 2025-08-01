@@ -19,16 +19,27 @@ components:
   - event_bindings: {click: add_quiz_click}
     layout_properties: {grid_position: 'DQCBIG,HRHWYW'}
     name: add_quiz
-    properties: {text: Add Quiz}
+    properties: {role: elevated-button, text: Add Quiz}
     type: Button
   layout_properties: {slot: default}
   name: content_panel
   properties: {col_widths: '{}'}
   type: ColumnPanel
-- layout_properties: {slot: nav-right}
+- components:
+  - data_bindings: []
+    event_bindings: {click: home_link_click}
+    layout_properties: {}
+    name: home_link
+    properties: {text: Home, url: ''}
+    type: Link
+  layout_properties: {slot: nav-right}
   name: navbar_links
   properties: {}
   type: FlowPanel
+- layout_properties: {slot: title}
+  name: label_1
+  properties: {text: Quiz Admin}
+  type: Label
 container:
   data_bindings: []
   properties: {html: '@theme:standard-page.html'}

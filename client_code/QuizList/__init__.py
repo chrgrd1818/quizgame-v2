@@ -57,6 +57,9 @@ class QuizList(QuizListTemplate):
       else:
         print("Request failed.")
 
+  def home_link_click(self, **event_args):
+    open_form("QuizHome")
+
       
 
      
