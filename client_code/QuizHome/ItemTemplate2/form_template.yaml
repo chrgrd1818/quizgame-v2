@@ -1,0 +1,21 @@
+components:
+- components:
+  - data_bindings:
+    - {code: 'self.item[''Title'']', property: text, writeback: false}
+    layout_properties: {full_width_row: false, grid_position: 'DXNINO,VLPZAL'}
+    name: label_1
+    properties: {}
+    type: Label
+  - data_bindings:
+    - {code: 'self.item[''File'']', property: tag, writeback: false}
+    event_bindings: {click: button_play_click}
+    layout_properties: {grid_position: 'SVHPGY,QMJRTB'}
+    name: button_play
+    properties: {text: Play}
+    type: Button
+  layout_properties: {grid_position: 'CPNCOV,NPHWWM'}
+  name: outlined_card_1
+  properties: {role: outlined-card}
+  type: ColumnPanel
+container: {type: ColumnPanel}
+is_package: true
