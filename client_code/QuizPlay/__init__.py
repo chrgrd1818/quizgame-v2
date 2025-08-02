@@ -16,6 +16,9 @@ class QuizPlay(QuizPlayTemplate):
   def __init__(self, quiz_data, **properties):
     self.init_components(**properties)
 
+    self.CORRECT = "Bravo!"
+    self.NOTCORRECT = "Essaye encore!"
+    self.GAGNE = "Felicitations! Quiz termine en"
     # Setup timer (interval = seconds)
     self.timer_next.interval  = 0
 
@@ -47,39 +50,48 @@ class QuizPlay(QuizPlayTemplate):
     self.lbl_level.text    = f"Niveau {self.current_level}"
     self.lbl_question.text = question['text']
     self.lbl_feedback.text = ""
-    self.radio_panel.clear()
-
-    option_h = 30
-    self.radio_panel.height = len(question['options']) * option_h
-
+    
+    ## butoons options
+    self.options_panel.clear() 
     for opt in question['options']:
-      rb = RadioButton(
-        text       = opt['text'],
-        group_name = "answers"
+      btn = Button(
+        text    = opt['text'],
+        role    = "tonal-button",      # you can pick "primary", "info", etc.
+        width   = "full-width",         # full-width, or whatever you need
+        align   = "center",
+        background= "theme:Primary Container",
+        font_size= 32
+        
       )
-      rb.correct = opt['correct']
-      self.radio_panel.add_component(rb)
+      # stash the correctness flag
+      btn.correct = opt['correct']
+      btn.set_event_handler('click', self.answer_click)
+      self.options_panel.add_component(btn)
 
-  def btn_submit_click(self, **event_args):
-    selected = next(
-      (rb.correct for rb in self.radio_panel.get_components() if rb.selected), None
-    )
-    if selected is None:
-      return
 
-    if selected:
+  def answer_click(self, **event_args):
+    btn = event_args['sender']
+    # Optional: clear previous highlights
+    for sibling in self.options_panel.get_components():
+      sibling.role = "default"
+      sibling.enable = False
+    # Highlight the clicked button
+    btn.role = "primary"
+    if btn.correct:
       self.feedback_ok()
     else:
       self.feedback_ko()
-
+    
     self.timer_next.interval  = 1
+    btn.enable= True
 
   def timer_next_tick(self, **event_args):
     self.timer_next.interval  = 0
     self.show_question()
 
   def feedback_ok(self):
-    self.lbl_feedback.text = "✅ Correct !"
+    self.lbl_feedback.text = self.CORRECT
+    self.lbl_feedback.foreground= "Green"
     self.current_q_idx += 1
     questions = self.levels[self.current_level]
     if self.current_q_idx >= len(questions):
@@ -87,13 +99,16 @@ class QuizPlay(QuizPlayTemplate):
       self.current_q_idx = 0
 
   def feedback_ko(self):
-    self.lbl_feedback.text = "❌ Faux — retour au début du niveau."
+    self.lbl_feedback.text = self.NOTCORRECT
+    self.lbl_feedback.foreground= "Red"
     self.current_q_idx = 0
      
   def complete_quiz(self):
     elapsed = (datetime.utcnow() - self.start_time).seconds
-    self.lbl_question.text   = "🎉 Vous avez terminé le quiz !"
-    self.lbl_feedback.text   = f"Temps total : {elapsed}s"
-    self.radio_panel.clear()
-    self.btn_submit.visible = False
-     self.lbl_level.text = ""
+    self.lbl_question.text   = f" {self.GAGNE} {elapsed}s"
+    self.lbl_feedback.text   = ""
+    self.options_panel.clear() 
+    self.lbl_level.text = ""
+
+  def link_quiz_click(self, **event_args):
+    open_form("QuizHome")

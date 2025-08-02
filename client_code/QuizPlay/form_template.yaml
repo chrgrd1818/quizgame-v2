@@ -16,37 +16,45 @@ components:
   - data_bindings: []
     layout_properties: {full_width_row: false, grid_position: 'TKHNFT,QGKKHX'}
     name: lbl_question
-    properties: {align: center, bold: false, font_size: 24, text: Question}
+    properties: {align: center, bold: false, font_size: 36, role: null, text: Question}
     type: Label
   - layout_properties: {grid_position: 'LBSBAH,XRTPXC'}
     name: spacer_2
     properties: {height: 32}
     type: Spacer
-  - layout_properties: {grid_position: 'NMOVMP,SPTWRF'}
-    name: radio_panel
-    properties: {}
-    type: ColumnPanel
+  - layout_properties: {full_width_row: false, grid_position: 'YGGPPZ,ONAYPI'}
+    name: options_panel
+    properties:
+      align: center
+      spacing:
+        padding: [null, null, 0, null]
+    type: FlowPanel
+  - layout_properties: {grid_position: 'WHCRJN,LTTJBB'}
+    name: spacer_1
+    properties: {height: 32}
+    type: Spacer
   - layout_properties: {grid_position: 'MDLOML,PUDRUB'}
     name: lbl_feedback
     properties: {align: center, font_size: 24}
     type: Label
-  - layout_properties: {grid_position: 'EXRKVX,FPMZRD'}
-    name: spacer_1
-    properties: {height: 32}
-    type: Spacer
-  - event_bindings: {click: btn_submit_click}
-    layout_properties: {grid_position: 'RIFIDD,RQPFBV'}
-    name: btn_submit
-    properties: {role: outlined-button, text: CHECK, visible: true}
-    type: Button
   layout_properties: {slot: default}
   name: content_panel
   properties: {}
   type: ColumnPanel
-- layout_properties: {slot: nav-right}
+- components:
+  - event_bindings: {click: link_quiz_click}
+    layout_properties: {}
+    name: link_quiz
+    properties: {icon: 'fa:backward'}
+    type: Link
+  layout_properties: {slot: nav-right}
   name: navbar_links
   properties: {}
   type: FlowPanel
+- layout_properties: {slot: title}
+  name: label_1
+  properties: {text: Play}
+  type: Label
 container:
   properties: {html: '@theme:standard-page.html'}
   type: HtmlTemplate
