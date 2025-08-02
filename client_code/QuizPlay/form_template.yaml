@@ -7,7 +7,7 @@ components:
     type: Timer
   - layout_properties: {grid_position: 'PHRHGL,ILWVEK'}
     name: lbl_level
-    properties: {align: center, bold: true, font_size: 22}
+    properties: {align: center, bold: true, font_size: 24}
     type: Label
   - layout_properties: {grid_position: 'PZPZNB,YPQZJM'}
     name: spacer_3
@@ -16,7 +16,7 @@ components:
   - data_bindings: []
     layout_properties: {full_width_row: false, grid_position: 'TKHNFT,QGKKHX'}
     name: lbl_question
-    properties: {align: center, bold: false, font_size: 22, text: Question}
+    properties: {align: center, bold: false, font_size: 24, text: Question}
     type: Label
   - layout_properties: {grid_position: 'LBSBAH,XRTPXC'}
     name: spacer_2
@@ -28,7 +28,7 @@ components:
     type: ColumnPanel
   - layout_properties: {grid_position: 'MDLOML,PUDRUB'}
     name: lbl_feedback
-    properties: {align: center}
+    properties: {align: center, font_size: 24}
     type: Label
   - layout_properties: {grid_position: 'EXRKVX,FPMZRD'}
     name: spacer_1
@@ -37,7 +37,7 @@ components:
   - event_bindings: {click: btn_submit_click}
     layout_properties: {grid_position: 'RIFIDD,RQPFBV'}
     name: btn_submit
-    properties: {role: outlined-button, text: CHECK}
+    properties: {role: outlined-button, text: CHECK, visible: true}
     type: Button
   layout_properties: {slot: default}
   name: content_panel
