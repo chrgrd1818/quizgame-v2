@@ -20,6 +20,11 @@ components:
     name: btn_jump
     properties: {font_size: 22, role: filled-button, text: JUMP}
     type: Button
+  - event_bindings: {click: btn_pause_click}
+    layout_properties: {grid_position: 'PQEYUE,NEVBLK'}
+    name: btn_pause
+    properties: {role: outlined-button, text: PAUSE}
+    type: Button
   layout_properties: {slot: default}
   name: content_panel
   properties: {}

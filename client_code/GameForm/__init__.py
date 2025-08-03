@@ -1,173 +1,182 @@
 from ._anvil_designer import GameFormTemplate
 from anvil import *
-from ..game_classes import Dino, Platform, Cactus, Star, Level
+from ..game_classes import Dino, Cactus, Star, GROUND_Y
+import random
 
 class GameForm(GameFormTemplate):
+  
 
+  FRAME_RATE     = 1/60
+  SCORE_START    = 12
+  STAR_POINT = 1
+  CACTUS_POINT = 2
+  
   def __init__(self, **properties):
     self.init_components(**properties)
 
-    self.canvas_1.width = 1000
-    self.canvas_1.height = 400
+    # base frame intervals at level 1
+    self.SPAWN_BASE   = 80    # cactus
+    self.STAR_BASE    = 200   # star
+    # clamps to avoid absurdly fast or slow spawns
+    self.SPAWN_MIN    = 20
+    self.STAR_MAX     = 400
+    self.INTERVAL_MODIFIER = 5
+    # Base scroll settings
+    self.scroll_speed = 6
+    # Level‐up every N frames
+    self.LEVEL_UP_INTERVAL = 1000
+    # How much speed increases per level
+    self.SPEED_INCREMENT = 1
+    # Track frames and levels
+    self.frame_count = 0
+    self.level = 1
+
+    # Canvas setup
+    self.canvas_1.width      = 1000
+    self.canvas_1.height     = 400
     self.canvas_1.background = "#555555"
-    self.canvas_1.role = "game-canvas"
 
-    # 1) Game objects
-    self.dino         = Dino()
-    self.score        = 10
-    self.game_over    = False
-    self.scroll_speed = 1
+    # Game state
+    self.dino       = Dino()
+    self.cacti      = []
+    self.stars      = []
+    self.score      = self.SCORE_START
+    self.game_over  = False
+    self.frame_count = 0
+    self.paused = False
 
-    # 2) Build levels
-    # Constants
-    BASE_Y    = 300               # all platforms share this y
-    STAR_Y    = BASE_Y - 60       # stars float 60px above ground
-    CACTUS_Y  = BASE_Y - 50       # cactus sprite is 50px tall
-    LEVEL_GAP = 1000              # separation between level start points
-    
-    # Level 1
-    lvl1_p = [
-      Platform(0,   BASE_Y, 600),
-    ]
-    lvl1_c = [
-      Cactus(200,   CACTUS_Y),
-      Cactus(450,   CACTUS_Y),
-    ]
-    lvl1_s = [
-      Star(550,     STAR_Y),
-    ]
-    
-    # Level 2 (positions are relative; Level’s x_offset shifts them all by +LEVEL_GAP)
-    lvl2_p = [
-      Platform(0,   BASE_Y, 250),
-      Platform(400, BASE_Y, 200),
-    ]
-    lvl2_c = [
-      Cactus(100,   CACTUS_Y),
-      Cactus(450,   CACTUS_Y),
-    ]
-    lvl2_s = [
-      Star(650,     STAR_Y),
-    ]
-    
-    # Level 3
-    lvl3_p = [
-      Platform(0,   BASE_Y, 150),
-      Platform(300, BASE_Y, 200),
-      Platform(700, BASE_Y, 150),
-    ]
-    lvl3_c = [
-      Cactus(50,    CACTUS_Y),
-      Cactus(450,   CACTUS_Y),
-      Cactus(750,   CACTUS_Y),
-    ]
-    lvl3_s = [
-      Star(900,     STAR_Y),
-    ]
-    
-    # Assemble with x-offsets built into each Level
-    self.levels = [
-      Level(0 * LEVEL_GAP, lvl1_p, lvl1_c, lvl1_s),
-      Level(1 * LEVEL_GAP, lvl2_p, lvl2_c, lvl2_s),
-      Level(2 * LEVEL_GAP, lvl3_p, lvl3_c, lvl3_s),
-    ]
-    # 3) Hook up Timer
-    #self.timer_1.interval = 1000/60   # ~16ms
+    # Start timer
+    self.timer_1.interval = self.FRAME_RATE
     self.timer_1.enabled  = True
 
-  # 4) Timer tick event
   def timer_1_tick(self, **event_args):
     if not self.game_over:
-      #print("⏱ tick") 
       self._update_game()
     self._draw_game()
 
-  # 5) Jump button
   def btn_jump_click(self, **event_args):
     if not self.game_over:
       self.dino.jump()
-    else:  
-      open_form('GameForm')
-      
-  # 6) Update & collisions
+    else:
+      open_form('GameForm')  # restart
+
   def _update_game(self):
-    for lvl in self.levels:
-      lvl.update_scroll(self.scroll_speed)
+    if self.paused:
+      return
+    self.frame_count += 1
 
-    platforms  = sum((lvl.platforms for lvl in self.levels), [])
-    cacti      = sum((lvl.cacti      for lvl in self.levels), [])
-    stars      = sum((lvl.stars      for lvl in self.levels), [])
+    spawn_interval = max(self.SPAWN_MIN,
+                         self.SPAWN_BASE - (self.level - 1) * self.INTERVAL_MODIFIER)
 
-    self.dino.update(platforms)
+    star_interval = min(self.STAR_MAX,
+                        self.STAR_BASE + (self.level - 1) * self.INTERVAL_MODIFIER)
 
-    for c in list(cacti):
-      if c.is_off_screen():
-        cacti.remove(c)
-      elif self._collide(self.dino.get_rect(), c.get_rect()):
-        self.score -= 1
-        cacti.remove(c)
+    # Check for leveling up
+    if self.frame_count % self.LEVEL_UP_INTERVAL == 0:
+      self.level += 1
+      self.scroll_speed += self.SPEED_INCREMENT
+      # Optional: print or draw the new level
+      print(f"Level up! Now at level {self.level}, speed={self.scroll_speed}")
+      self.score += self.SCORE_START 
+      
+    # Update Dino
+    self.dino.update()
 
-    for s in list(stars):
-      if s.is_off_screen():
-        stars.remove(s)
-      elif self._collide(self.dino.get_rect(), s.get_rect()):
-        self.score += 3
-        stars.remove(s)
+    # Spawn obstacles
+    if self.frame_count % spawn_interval == 0:
+      self.cacti.append(Cactus(self.canvas_1.width))
+    if self.frame_count % star_interval == 0:
+      # star appears betwwen 100 and 120px above ground
+      y = GROUND_Y - random.randint(100, 120)
+      self.stars.append(Star(self.canvas_1.width, y))
 
-    if self.dino.y > 410 or self.score < 1:
+      # Move & cull off-screen
+    for lst in (self.cacti, self.stars):
+      for obj in lst:
+        obj.update()
+    self.cacti = [c for c in self.cacti if not c.is_off_screen()]
+    self.stars = [s for s in self.stars if not s.is_off_screen()]
+
+    # Handle collisions
+    self._handle_collisions()
+
+    # Check Game Over
+    if self.score < 1:
       self.game_over = True
 
-  # 7) Draw everything
+  def _handle_collisions(self):
+    dino_rect = self.dino.get_rect()
+
+    # Cactus collisions
+    survivors = []
+    for c in self.cacti:
+      if self._collide(dino_rect, c.get_rect()):
+        self.score -= self.CACTUS_POINT
+      else:
+        survivors.append(c)
+    self.cacti= survivors
+
+    # Star collisions
+    survivors = []
+    for s in self.stars:
+      if self._collide(dino_rect, s.get_rect()):
+        self.score += self.STAR_POINT
+      else:
+        survivors.append(s)
+    self.stars = survivors
+
   def _draw_game(self):
     ctx = self.canvas_1
+    w, h = ctx.width, ctx.height
+
+    # Clear & sky
     ctx.reset_context()
+    ctx.clear_rect(0, 0, w, h)
+    ctx.fill_style = "#CEF1F5"
+    ctx.fill_rect(0, 0, w, h)
 
-  # 1) Clear the canvas
-    ctx.clear_rect(0, 0, self.canvas_1.width, self.canvas_1.height)
+    # Ground line
+    ctx.begin_path()
+    ctx.stroke_style = "#4D4825"
+    ctx.line_width   = 5
+    ctx.move_to(0, GROUND_Y)
+    ctx.line_to(w, GROUND_Y)
+    ctx.stroke()
 
-  # 2) Draw sky background
-    ctx.fill_style = "#C5EBF0"
-    ctx.fill_rect(0, 0, self.canvas_1.width, self.canvas_1.height)
+    # Draw all objects (they each set their own fill_style)
+    for c in self.cacti:
+      c.draw(ctx)
 
-  # 3) Draw all platforms
-    ctx.fill_style = "#555555"
-    for lvl in self.levels:
-      for p in lvl.platforms:
-        ctx.fill_rect(p.x, p.y, p.width, p.height)
+    for s in self.stars:
+      s.draw(ctx)
 
-    # 4) Draw cacti
-    ctx.fill_style = "#228B22"
-    for lvl in self.levels:
-      for c in lvl.cacti:
-        ctx.fill_rect(c.x, c.y, c.width, c.height)
+    self.dino.draw(ctx)
 
-    # 5) Draw stars
-    ctx.fill_style = "#D2DE09"
-    for lvl in self.levels:
-      for s in lvl.stars:
-        ctx.fill_rect(s.x, s.y, s.width, s.height)
-
-    # 6) Draw Dino
-    ctx.fill_style = "#CDA132"
-    d = self.dino
-    ctx.fill_rect(d.x, d.y, d.width, d.height)
-
-    # 7) Draw Score
-    ctx.fill_style = "#000000"
-    ctx.font      = "20px sans-serif"
+    # UI: score & game over
+    ctx.fill_style = "#222222"
+    ctx.font        = "20px sans-serif"
     ctx.fill_text(f"Score: {self.score}", 10, 20)
 
-    # 8) Game Over Overlay
     if self.game_over:
-      ctx.font     = "30px sans-serif"
+      ctx.font = "30px sans-serif"
       ctx.fill_text("GAME OVER! Click Jump to Restart", 200, 200)
 
-  # 8) Rectangle collision
-  def _collide(self, a, b):
+  @staticmethod
+  def _collide(a, b):
     ax, ay, aw, ah = a
     bx, by, bw, bh = b
-    return not (ax+aw < bx or bx+bw < ax or ay+ah < by or by+bh < ay)
+    return not (ax + aw  < bx or
+                bx + bw < ax or
+                ay + ah  < by or
+                by + bh < ay)
 
   def link_home_click(self, **event_args):
     open_form('QuizHome')
-    pass
+
+  def btn_pause_click(self, **event_args):
+    # Flip state
+    self.paused = not self.paused
+    # Update button label
+    self.btn_pause.text = "RESUME" if self.paused else "PAUSE"
+
+
