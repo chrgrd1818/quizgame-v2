@@ -1,0 +1,39 @@
+components:
+- components:
+  - event_bindings: {tick: timer_1_tick}
+    layout_properties: {grid_position: 'SMXQKV,HQFZQT'}
+    name: timer_1
+    properties: {interval: 0.016}
+    type: Timer
+  - event_bindings: {}
+    layout_properties: {grid_position: 'EDDREO,THFIJN'}
+    name: canvas_1
+    properties: {height: '400'}
+    type: Canvas
+  - event_bindings: {click: btn_jump_click}
+    layout_properties: {full_width_row: false, grid_position: 'FYRVUA,PGIDML'}
+    name: btn_jump
+    properties: {font_size: 22, role: filled-button, text: JUMP}
+    type: Button
+  layout_properties: {slot: default}
+  name: content_panel
+  properties: {}
+  type: ColumnPanel
+- components:
+  - event_bindings: {click: link_home_click}
+    layout_properties: {}
+    name: link_home
+    properties: {icon: 'fa:home'}
+    type: Link
+  layout_properties: {slot: nav-right}
+  name: navbar_links
+  properties: {}
+  type: FlowPanel
+- layout_properties: {slot: title}
+  name: label_1
+  properties: {text: Game}
+  type: Label
+container:
+  properties: {html: '@theme:standard-page.html'}
+  type: HtmlTemplate
+is_package: true

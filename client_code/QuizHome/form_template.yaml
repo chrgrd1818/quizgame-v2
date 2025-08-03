@@ -10,7 +10,13 @@ components:
   properties: {}
   type: ColumnPanel
 - components:
-  - event_bindings: {click: admin_link_click}
+  - components:
+    - event_bindings: {click: link_game_click}
+      layout_properties: {grid_position: 'CWTEHG,BDBYUT'}
+      name: link_game
+      properties: {text: Game}
+      type: Link
+    event_bindings: {click: admin_link_click}
     layout_properties: {}
     name: admin_link
     properties: {text: Admin}

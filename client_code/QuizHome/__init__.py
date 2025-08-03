@@ -26,4 +26,7 @@ class QuizHome(QuizHomeTemplate):
           print("Request failed.")
       else:
         print("No quiz selected.")
+
+  def link_game_click(self, **event_args):
+    open_form("GameForm")
    
