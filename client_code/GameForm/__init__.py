@@ -7,26 +7,70 @@ class GameForm(GameFormTemplate):
   def __init__(self, **properties):
     self.init_components(**properties)
 
+    self.canvas_1.width = 1000
+    self.canvas_1.height = 400
+    self.canvas_1.background = "#555555"
+    self.canvas_1.role = "game-canvas"
+
     # 1) Game objects
     self.dino         = Dino()
-    self.score        = 0
+    self.score        = 10
     self.game_over    = False
-    self.scroll_speed = 5
+    self.scroll_speed = 1
 
     # 2) Build levels
-    lvl1_p = [Platform(0,300,200), Platform(250,260,120)]
-    lvl1_c = [Cactus(180), Cactus(350)]
-    lvl1_s = [Star(300,240)]
-
-    lvl2_p = [Platform(600,300,180), Platform(820,270,140)]
-    lvl2_c = [Cactus(650)]
-    lvl2_s = [Star(700,250), Star(860,240)]
-
-    self.levels = [
-      Level(0,   lvl1_p, lvl1_c, lvl1_s),
-      Level(900, lvl2_p, lvl2_c, lvl2_s)
+    # Constants
+    BASE_Y    = 300               # all platforms share this y
+    STAR_Y    = BASE_Y - 60       # stars float 60px above ground
+    CACTUS_Y  = BASE_Y - 50       # cactus sprite is 50px tall
+    LEVEL_GAP = 1000              # separation between level start points
+    
+    # Level 1
+    lvl1_p = [
+      Platform(0,   BASE_Y, 600),
     ]
-
+    lvl1_c = [
+      Cactus(200,   CACTUS_Y),
+      Cactus(450,   CACTUS_Y),
+    ]
+    lvl1_s = [
+      Star(550,     STAR_Y),
+    ]
+    
+    # Level 2 (positions are relative; Level’s x_offset shifts them all by +LEVEL_GAP)
+    lvl2_p = [
+      Platform(0,   BASE_Y, 250),
+      Platform(400, BASE_Y, 200),
+    ]
+    lvl2_c = [
+      Cactus(100,   CACTUS_Y),
+      Cactus(450,   CACTUS_Y),
+    ]
+    lvl2_s = [
+      Star(650,     STAR_Y),
+    ]
+    
+    # Level 3
+    lvl3_p = [
+      Platform(0,   BASE_Y, 150),
+      Platform(300, BASE_Y, 200),
+      Platform(700, BASE_Y, 150),
+    ]
+    lvl3_c = [
+      Cactus(50,    CACTUS_Y),
+      Cactus(450,   CACTUS_Y),
+      Cactus(750,   CACTUS_Y),
+    ]
+    lvl3_s = [
+      Star(900,     STAR_Y),
+    ]
+    
+    # Assemble with x-offsets built into each Level
+    self.levels = [
+      Level(0 * LEVEL_GAP, lvl1_p, lvl1_c, lvl1_s),
+      Level(1 * LEVEL_GAP, lvl2_p, lvl2_c, lvl2_s),
+      Level(2 * LEVEL_GAP, lvl3_p, lvl3_c, lvl3_s),
+    ]
     # 3) Hook up Timer
     #self.timer_1.interval = 1000/60   # ~16ms
     self.timer_1.enabled  = True
@@ -34,7 +78,7 @@ class GameForm(GameFormTemplate):
   # 4) Timer tick event
   def timer_1_tick(self, **event_args):
     if not self.game_over:
-      #print("⏱ tick")    # <-- should flood your server log at ~60/sec
+      #print("⏱ tick") 
       self._update_game()
     self._draw_game()
 
@@ -42,13 +86,15 @@ class GameForm(GameFormTemplate):
   def btn_jump_click(self, **event_args):
     if not self.game_over:
       self.dino.jump()
-
+    else:  
+      open_form('GameForm')
+      
   # 6) Update & collisions
   def _update_game(self):
     for lvl in self.levels:
       lvl.update_scroll(self.scroll_speed)
 
-    platforms = sum((lvl.platforms for lvl in self.levels), [])
+    platforms  = sum((lvl.platforms for lvl in self.levels), [])
     cacti      = sum((lvl.cacti      for lvl in self.levels), [])
     stars      = sum((lvl.stars      for lvl in self.levels), [])
 
@@ -56,19 +102,19 @@ class GameForm(GameFormTemplate):
 
     for c in list(cacti):
       if c.is_off_screen():
-        self.score += 1
         cacti.remove(c)
       elif self._collide(self.dino.get_rect(), c.get_rect()):
-        self.game_over = True
+        self.score -= 1
+        cacti.remove(c)
 
     for s in list(stars):
       if s.is_off_screen():
         stars.remove(s)
       elif self._collide(self.dino.get_rect(), s.get_rect()):
-        self.score += 5
+        self.score += 3
         stars.remove(s)
 
-    if self.dino.y > 400:
+    if self.dino.y > 410 or self.score < 1:
       self.game_over = True
 
   # 7) Draw everything
@@ -80,11 +126,11 @@ class GameForm(GameFormTemplate):
     ctx.clear_rect(0, 0, self.canvas_1.width, self.canvas_1.height)
 
   # 2) Draw sky background
-    ctx.fill_style = "#ffffff"
-    ctx.fill_rect(0, 0, 800, 400)
+    ctx.fill_style = "#C5EBF0"
+    ctx.fill_rect(0, 0, self.canvas_1.width, self.canvas_1.height)
 
   # 3) Draw all platforms
-    ctx.fillStyle = "#555555"
+    ctx.fill_style = "#555555"
     for lvl in self.levels:
       for p in lvl.platforms:
         ctx.fill_rect(p.x, p.y, p.width, p.height)
@@ -96,13 +142,13 @@ class GameForm(GameFormTemplate):
         ctx.fill_rect(c.x, c.y, c.width, c.height)
 
     # 5) Draw stars
-    ctx.fillStyle = "#FFD700"
+    ctx.fill_style = "#D2DE09"
     for lvl in self.levels:
       for s in lvl.stars:
         ctx.fill_rect(s.x, s.y, s.width, s.height)
 
     # 6) Draw Dino
-    ctx.fill_style = "#32CD32"
+    ctx.fill_style = "#CDA132"
     d = self.dino
     ctx.fill_rect(d.x, d.y, d.width, d.height)
 

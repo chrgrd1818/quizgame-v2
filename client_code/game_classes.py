@@ -74,11 +74,11 @@ class Cactus:
     return self.x + self.width < 0
 
   def get_rect(self):
-    return (self.x, self.y, self.width, self.height)
+    return (self.x, self.y, 1, self.height)
 
 
 class Star:
-  def __init__(self, x, y, width=10, height=10, speed=6, color="#FFD700"):
+  def __init__(self, x, y, width=10, height=10, speed=6, color="#D2DE09"):
     self.x, self.y = x, y
     self.width, self.height = width, height
     self.speed = speed
@@ -94,7 +94,7 @@ class Star:
     return self.x + self.width < 0
 
   def get_rect(self):
-    return (self.x, self.y, self.width, self.height)
+    return (self.x, self.y, 1, self.height)
 
 
 class Level:

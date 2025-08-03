@@ -5,11 +5,16 @@ components:
     name: timer_1
     properties: {interval: 0.016}
     type: Timer
-  - event_bindings: {}
-    layout_properties: {grid_position: 'EDDREO,THFIJN'}
-    name: canvas_1
-    properties: {height: '400'}
-    type: Canvas
+  - components:
+    - event_bindings: {}
+      layout_properties: {grid_position: 'RJPLEI,KDYRVQ'}
+      name: canvas_1
+      properties: {height: '400'}
+      type: Canvas
+    layout_properties: {full_width_row: false, grid_position: 'OUYPTH,SCAKCP'}
+    name: column_panel_1
+    properties: {}
+    type: ColumnPanel
   - event_bindings: {click: btn_jump_click}
     layout_properties: {full_width_row: false, grid_position: 'FYRVUA,PGIDML'}
     name: btn_jump
