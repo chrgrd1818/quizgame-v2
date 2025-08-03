@@ -73,16 +73,48 @@ class GameForm(GameFormTemplate):
 
   # 7) Draw everything
   def _draw_game(self):
-    c = self.canvas_1
-    c.reset_context()
-    c.fill_rect(0, 0, 800, 400, "#FFF")         # sky
-    for lvl in self.levels: 
-      lvl.draw(c)           # platforms, cacti, stars
-    self.dino.draw(c)                             # dino
-    c.fill_text(f"Score: {self.score}", 10, 20)   # score
+    ctx = self.canvas_1
+    ctx.reset_context()
 
+  # 1) Clear the canvas
+    ctx.clear_rect(0, 0, self.canvas_1.width, self.canvas_1.height)
+
+  # 2) Draw sky background
+    ctx.fill_style = "#ffffff"
+    ctx.fill_rect(0, 0, 800, 400)
+
+  # 3) Draw all platforms
+    ctx.fillStyle = "#555555"
+    for lvl in self.levels:
+      for p in lvl.platforms:
+        ctx.fill_rect(p.x, p.y, p.width, p.height)
+
+    # 4) Draw cacti
+    ctx.fill_style = "#228B22"
+    for lvl in self.levels:
+      for c in lvl.cacti:
+        ctx.fill_rect(c.x, c.y, c.width, c.height)
+
+    # 5) Draw stars
+    ctx.fillStyle = "#FFD700"
+    for lvl in self.levels:
+      for s in lvl.stars:
+        ctx.fill_rect(s.x, s.y, s.width, s.height)
+
+    # 6) Draw Dino
+    ctx.fill_style = "#32CD32"
+    d = self.dino
+    ctx.fill_rect(d.x, d.y, d.width, d.height)
+
+    # 7) Draw Score
+    ctx.fill_style = "#000000"
+    ctx.font      = "20px sans-serif"
+    ctx.fill_text(f"Score: {self.score}", 10, 20)
+
+    # 8) Game Over Overlay
     if self.game_over:
-      c.fill_text("GAME OVER! Click Jump to Restart", 200, 200)
+      ctx.font     = "30px sans-serif"
+      ctx.fill_text("GAME OVER! Click Jump to Restart", 200, 200)
 
   # 8) Rectangle collision
   def _collide(self, a, b):
