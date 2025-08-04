@@ -5,7 +5,6 @@ import random
 
 class GameForm(GameFormTemplate):
   
-
   FRAME_RATE     = 1/60
   SCORE_START    = 12
   STAR_POINT = 1
