@@ -10,16 +10,23 @@ components:
   properties: {}
   type: ColumnPanel
 - components:
-  - components:
-    - event_bindings: {click: link_game_click}
-      layout_properties: {grid_position: 'CWTEHG,BDBYUT'}
-      name: link_game
-      properties: {text: Game}
-      type: Link
+  - event_bindings: {click: link_game_click}
+    name: link_game
+    properties: {text: Game}
+    type: Link
+  - components: []
     event_bindings: {click: admin_link_click}
     layout_properties: {}
     name: admin_link
     properties: {text: Admin}
+    type: Link
+  - event_bindings: {click: link_login_click}
+    name: link_login
+    properties: {text: Login}
+    type: Link
+  - components: []
+    name: link_account
+    properties: {text: Account, visible: true}
     type: Link
   layout_properties: {slot: nav-right}
   name: navbar_links

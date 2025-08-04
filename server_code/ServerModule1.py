@@ -1,3 +1,4 @@
+import anvil.users
 import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
@@ -43,5 +44,27 @@ def fetch_quiz_from_url(url):
   except requests.exceptions.RequestException as err:
     print(f"An error occurred: {err}")
   
-    
+@anvil.server.callable
+def set_score_quiz(quiz, time):
+  user = anvil.users.get_user()
+  if not user:
+    raise Exception("No User or Login required")
+  app_tables.user_quiz.add_row(User=user, Quiz=quiz, Time=time)
+
+@anvil.server.callable
+def get_score_quiz(quiz):
+  user = anvil.users.get_user()
+  if not user:
+    raise Exception("No User or Login required")
+  rows = app_tables.user_quiz.search(User=user)
+  return [(r['Time']) for r in rows]
+
+@anvil.server.callable
+def get_all_score_quiz():
+  user = anvil.users.get_user()
+  if not user:
+    raise Exception("No User or Login required")
+  rows = app_tables.user_quiz.search(User=user)
+  return [(r['Quiz'], r['Time']) for r in rows]
+
 

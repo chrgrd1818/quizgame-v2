@@ -1,5 +1,6 @@
 from ._anvil_designer import GameFormTemplate
 from anvil import *
+import anvil.users
 from ..game_classes import Dino, Cactus, Star, GROUND_Y
 import random
 

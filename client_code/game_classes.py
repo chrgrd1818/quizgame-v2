@@ -1,3 +1,4 @@
+import anvil.users
 import random
 
 GROUND_Y = 300

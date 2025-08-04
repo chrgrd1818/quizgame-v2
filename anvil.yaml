@@ -14,6 +14,72 @@ db_schema:
       type: string
     server: full
     title: Quizzes
+  user_game:
+    client: none
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: User
+      target: users
+      type: link_single
+    - admin_ui: {order: 1, width: 200}
+      name: Game
+      type: string
+    - admin_ui: {order: 2, width: 200}
+      name: Score
+      type: number
+    - admin_ui: {order: 3, width: 200}
+      name: Date
+      type: date
+    server: full
+    title: User_game
+  user_quiz:
+    client: none
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: User
+      target: users
+      type: link_single
+    - admin_ui: {order: 3, width: 200}
+      name: Date
+      type: date
+    - admin_ui: {order: 1, width: 200}
+      name: Quiz
+      target: quizzes
+      type: link_multiple
+    - admin_ui: {order: 2, width: 200}
+      name: Time
+      type: number
+    server: full
+    title: User_quiz
+  users:
+    client: none
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: email
+      type: string
+    - admin_ui: {order: 1, width: 200}
+      name: enabled
+      type: bool
+    - admin_ui: {order: 2, width: 200}
+      name: last_login
+      type: datetime
+    - admin_ui: {order: 3, width: 200}
+      name: password_hash
+      type: string
+    - admin_ui: {order: 4, width: 200}
+      name: n_password_failures
+      type: number
+    - admin_ui: {order: 5, width: 200}
+      name: confirmed_email
+      type: bool
+    - admin_ui: {order: 6, width: 200}
+      name: remembered_logins
+      type: simpleObject
+    - admin_ui: {order: 7, width: 200}
+      name: signed_up
+      type: datetime
+    server: full
+    title: Users
 dependencies: []
 name: Quiz2
 package_name: Quiz2
@@ -27,5 +93,8 @@ services:
 - client_config: {}
   server_config: {}
   source: /runtime/services/tables.yml
+- client_config: {allow_remember_me: true, allow_signup: true, confirm_email: false, enable_automatically: true, remember_me_days: 30, use_email: true}
+  server_config: {user_table: users}
+  source: /runtime/services/anvil/users.yml
 startup: {module: QuizHome, type: form}
 startup_form: null

@@ -1,9 +1,11 @@
 from ._anvil_designer import QuizHomeTemplate
 from anvil import *
+import anvil.users
 import anvil.server
 import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
+
 
 class QuizHome(QuizHomeTemplate):
   def __init__(self, **properties):
@@ -31,3 +33,23 @@ class QuizHome(QuizHomeTemplate):
   def link_game_click(self, **event_args):
     open_form("GameForm")
    
+  def signup(self, email, password):
+    self.users.signup_with_email(email, password)
+  
+  def login(self, email, password):
+    self.users.login_with_email(email, password)
+  
+  def logout(self):
+    self.users.logout()
+  
+  def set_score_quiz(self, quiz, time):
+    self.server.call('set_score_quiz', quiz, time)
+  
+  def get_score_quiz(self, quiz):
+    return self.server.call('get_score_quiz', quiz)
+
+  def get_all_score_quiz(self, quiz):
+    return self.server.call('get_all_score_quiz')
+
+  def link_login_click(self, **event_args):
+    self.open_form("LogSign")
