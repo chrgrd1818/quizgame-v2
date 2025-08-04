@@ -152,14 +152,18 @@ class GameForm(GameFormTemplate):
 
     self.dino.draw(ctx)
 
-    # UI: score & game over
+    # UI: score & game over & levels
     ctx.fill_style = "#222222"
-    ctx.font        = "20px sans-serif"
-    ctx.fill_text(f"Score: {self.score}", 10, 20)
+    ctx.font        = "36px sans-serif"
+    ctx.fill_text(f"Points: {self.score}", 30, 50)
+
+    ctx.fill_style = "#222222"
+    ctx.font        = "36px sans-serif"
+    ctx.fill_text(f"Level: {self.level}", 300, 50)
 
     if self.game_over:
-      ctx.font = "30px sans-serif"
-      ctx.fill_text("GAME OVER! Click Jump to Restart", 200, 200)
+      ctx.font = "50px sans-serif"
+      ctx.fill_text("GAME OVER! Click Jump to Restart", 250, 250)
 
   @staticmethod
   def _collide(a, b):
