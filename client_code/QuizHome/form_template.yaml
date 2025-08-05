@@ -24,10 +24,6 @@ components:
     name: admin_link
     properties: {text: Admin}
     type: Link
-  - event_bindings: {click: link_login_click}
-    name: link_login
-    properties: {text: Login}
-    type: Link
   - components: []
     event_bindings: {click: link_account_click}
     name: link_account

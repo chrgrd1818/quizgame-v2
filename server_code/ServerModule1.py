@@ -67,4 +67,6 @@ def get_all_score_quiz():
   rows = app_tables.user_quiz.search(User=user)
   return [(r['Quiz'], r['Time']) for r in rows]
 
-
+@anvil.server.callable
+def get_user():
+  return anvil.users.get_user()

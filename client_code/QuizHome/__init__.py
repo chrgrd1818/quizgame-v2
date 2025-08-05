@@ -11,10 +11,13 @@ class QuizHome(QuizHomeTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
-    anvil.users.login_with_form()
+    #anvil.users.login_with_form()
     self.repeating_panel_2.items = app_tables.quizzes.search()
-    self.repeating_panel_2.add_event_handler('x-play-quiz', self.play_quiz) 
-    self.label_user.text = anvil.users.get_user()['email']
+    self.repeating_panel_2.add_event_handler('x-play-quiz', self.play_quiz)
+    if anvil.users.get_user():
+      self.label_user.text = anvil.users.get_user()['email']
+    else:
+      self.label_user.text = ""
     
   def admin_link_click(self, **event_args):
     open_form("QuizList")
@@ -34,15 +37,7 @@ class QuizHome(QuizHomeTemplate):
 
   def link_game_click(self, **event_args):
     open_form("GameForm")
-   
-  def signup(self, email, password):
-    self.users.signup_with_email(email, password)
   
-  def login(self, email, password):
-    self.users.login_with_email(email, password)
-  
-  def logout(self):
-    self.users.logout()
   
   def set_score_quiz(self, quiz, time):
     self.server.call('set_score_quiz', quiz, time)
@@ -58,7 +53,15 @@ class QuizHome(QuizHomeTemplate):
 
   def link_account_click(self, **event_args):
     anvil.users.login_with_form()
-
+    user = anvil.server.call('get_user')
+    if user and user['role'] == 'admin':
+      open_form('QuizList')
+    else:
+      open_form('QuizHome')
+      
   def link_logout_click(self, **event_args):
     anvil.users.logout()
+    open_form('QuizHome')
+    
 
+ 
