@@ -11,8 +11,10 @@ class QuizHome(QuizHomeTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
+    anvil.users.login_with_form()
     self.repeating_panel_2.items = app_tables.quizzes.search()
     self.repeating_panel_2.add_event_handler('x-play-quiz', self.play_quiz) 
+    self.label_user.text = anvil.users.get_user()['email']
     
   def admin_link_click(self, **event_args):
     open_form("QuizList")
@@ -52,4 +54,11 @@ class QuizHome(QuizHomeTemplate):
     return self.server.call('get_all_score_quiz')
 
   def link_login_click(self, **event_args):
-    self.open_form("LogSign")
+    open_form("LogSign")
+
+  def link_account_click(self, **event_args):
+    anvil.users.login_with_form()
+
+  def link_logout_click(self, **event_args):
+    anvil.users.logout()
+
