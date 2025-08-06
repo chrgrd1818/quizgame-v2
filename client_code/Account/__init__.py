@@ -21,4 +21,7 @@ class Account(AccountTemplate):
 
   def link_home_click(self, **event_args):
     open_form('QuizHome')
+
+  def link_admin_users_click(self, **event_args):
+    open_form('QuizTaken')
     

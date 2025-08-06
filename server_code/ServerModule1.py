@@ -22,22 +22,22 @@ def get_quizzes_for_user(user_id):
   # 3. Group attempts by quiz_id
   attempts_map = defaultdict(list)
   for uq in taken_rows:
-    quiz_id = uq['Quiz']._row_id
+    quiz_id = uq['Quiz'].get_id()
     attempts_map[quiz_id].append(uq)
 
   # 4. Build the flat result list
   result = []
   for quiz in all_quizzes:
-    quiz_id  = quiz._row_id
+    quiz_id = quiz.get_id()
     attempts = attempts_map.get(quiz_id, [])
 
     if attempts:
       # Pick the fastest attempt (smallest Time).  
-      # For latest by date, swap min() → max() and key→ lambda x: x['Date'].
+      # For latest by date, swap min() → max() and key→ lambda x: x['DateTime'].
       best = min(attempts, key=lambda x: x['Time'])
       taken = True
       time  = best['Time']
-      date  = best['Date']
+      date  = best['DateTime']
     else:
       taken = False
       time  = None

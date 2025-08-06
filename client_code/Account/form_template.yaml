@@ -6,7 +6,8 @@ components:
       name: link_admin_quizzes
       properties: {text: Quizzes Admin}
       type: Link
-    - layout_properties: {col_xs: 4, row: KJGLEV, width_xs: 4}
+    - event_bindings: {click: link_admin_users_click}
+      layout_properties: {col_xs: 4, row: KJGLEV, width_xs: 4}
       name: link_admin_users
       properties: {text: Quiz Players}
       type: Link

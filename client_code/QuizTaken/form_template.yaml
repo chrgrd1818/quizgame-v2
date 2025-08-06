@@ -1,0 +1,35 @@
+components:
+- components:
+  - components:
+    - data_bindings: []
+      layout_properties: {pinned: false}
+      name: repeating_panel_1
+      properties: {foreground: 'theme:Secondary', item_template: QuizTaken.RowTemplate2}
+      type: RepeatingPanel
+    layout_properties: {grid_position: 'KLKJQT,JXMGRZ'}
+    name: data_grid_taken_quiz
+    properties:
+      columns:
+      - {data_key: title, id: JKSDUP, title: Title}
+      - {data_key: taken, id: VJQQOR, title: Complete}
+      - {data_key: time, expand: false, id: OJLQEN, title: Best Time, width: 227.7999267578125}
+      - {data_key: date, id: XZEQSR, title: Date}
+    type: DataGrid
+  layout_properties: {slot: default}
+  name: content_panel
+  properties: {}
+  type: ColumnPanel
+- components:
+  - event_bindings: {click: link_back_click}
+    layout_properties: {}
+    name: link_back
+    properties: {icon: 'fa:backward'}
+    type: Link
+  layout_properties: {slot: nav-right}
+  name: navbar_links
+  properties: {}
+  type: FlowPanel
+container:
+  properties: {html: '@theme:standard-page.html'}
+  type: HtmlTemplate
+is_package: true
