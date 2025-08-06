@@ -23,10 +23,10 @@ class QuizPlay(QuizPlayTemplate):
     self.GAGNE = "Felicitations! Quiz termine en"
     # Setup timer (interval = seconds)
     self.timer_next.interval  = 0
-
+    self.quiz = quiz_data["quiz_selected"]
     # Organize questions
     self.levels = group_questions_by_level(quiz_data['questions'])
-    self.title = quiz_data['title']
+    self.title = quiz_data['quiz_selected']['Title']
     if not self.levels:
       print("No questions found.")
       return
@@ -74,17 +74,16 @@ class QuizPlay(QuizPlayTemplate):
         background= "theme:Primary Container",
         font_size= 32
       )
-      # stash the correctness flag
+  
       btn.correct = opt['correct']
       btn.set_event_handler('click', self.answer_click)
       self.options_panel.add_component(btn)
       
   def update_progress_panel(self):
-    # remove old shapes…
+   
       self.progress_panel.clear()
       self.progress_shapes = []
 
-      # …then add one circle per question in this level
       questions = self.levels[self.current_level]
       for _ in questions:
         btn = Button(
@@ -105,11 +104,11 @@ class QuizPlay(QuizPlayTemplate):
 
   def answer_click(self, **event_args):
     btn = event_args['sender']
-    # Optional: clear previous highlights
+    
     for sibling in self.options_panel.get_components():
       sibling.role = "default"
       sibling.enabled = False
-    # Highlight the clicked button
+ 
     btn.role = "primary"
     if btn.correct:
       self.feedback_ok()
@@ -152,6 +151,12 @@ class QuizPlay(QuizPlayTemplate):
     self.lbl_level.text = ""
     self.progress_panel.clear()
     self.progress_shapes = []
+    self.save_quiz(elapsed)
 
+  def save_quiz(self, elapsed):
+    quiz = self.quiz
+    time = elapsed
+    anvil.server.call("set_score_quiz", quiz, time)
+    
   def link_quiz_click(self, **event_args):
     open_form("QuizHome")

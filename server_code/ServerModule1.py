@@ -49,7 +49,7 @@ def set_score_quiz(quiz, time):
   user = anvil.users.get_user()
   if not user:
     raise Exception("No User or Login required")
-  app_tables.user_quiz.add_row(User=user, Quiz=quiz, Time=time)
+  app_tables.user_quiz.add_row(User=user, Quiz=quiz, Time=time, DateTime=datetime.utcnow())
 
 @anvil.server.callable
 def get_score_quiz(quiz):

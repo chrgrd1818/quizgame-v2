@@ -19,16 +19,14 @@ class QuizHome(QuizHomeTemplate):
     else:
       self.label_user.text = ""
     
-  def admin_link_click(self, **event_args):
-    open_form("QuizList")
-
+  
   def play_quiz(self, quiz, **event_args):
       if quiz:
         url = quiz['File']
         title = quiz['Title']
         load = anvil.server.call('fetch_quiz_from_url', url)
         if load:
-          load['title']=title
+          load['quiz_selected']=quiz
           open_form("QuizPlay", quiz_data=load)
         else:
           print("Request failed.")
@@ -55,7 +53,7 @@ class QuizHome(QuizHomeTemplate):
     anvil.users.login_with_form()
     user = anvil.server.call('get_user')
     if user and user['role'] == 'admin':
-      open_form('QuizList')
+      open_form('Account')
     else:
       open_form('QuizHome')
       

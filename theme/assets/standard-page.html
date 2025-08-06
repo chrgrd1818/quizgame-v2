@@ -8,11 +8,10 @@
     <div class="title" anvil-slot="title">
       <div class="placeholder anvil-designer-only" anvil-if-slot-empty="title" anvil-drop-here>Drop title here</div>
     </div>
-    <div class="app-bar-nav" anvil-slot="nav-right">
-      <button class="menu-toggle">0</button>
-      <nav class="placeholder anvil-designer-only nav-links" anvil-if-slot-empty="nav-right" anvil-drop-here>Drop a FlowPanel here</nav>
-     
-    </div>
+    <nav id="app-bar-nav" class="app-bar-nav nav-links" anvil-slot="nav-right">
+      <a class="menu-toggle" aria-disabled="true">M</a>
+      <div class="placeholder anvil-designer-only" anvil-if-slot-empty="nav-right" anvil-drop-here>Drop a FlowPanel here</div>
+    </nav>
     <div style="clear:both"></div>
   </div>
 
@@ -132,6 +131,6 @@
 </script>
 <script>
   document.querySelector('.menu-toggle').addEventListener('click', () => {
-    document.querySelector('.app-bar-nav').classList.toggle('active');
+    document.querySelector('.app-bar-nav').classList.toggle('menu_active');
   });
 </script>
