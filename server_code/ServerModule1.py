@@ -6,6 +6,53 @@ import anvil.server
 from datetime import datetime
 import anvil.tz
 import requests
+from collections import defaultdict
+
+@anvil.server.callable
+def get_quizzes_for_user(user_id):
+  # 1. Look up the user
+  user = app_tables.users.get_by_id(user_id)
+  if user is None:
+    raise Exception("User not found")
+
+  # 2. Fetch all quizzes and this user's quiz-attempt rows
+  all_quizzes = app_tables.quizzes.search()              # All definitions
+  taken_rows  = app_tables.user_quiz.search(User=user)   # Attempts by this user
+
+  # 3. Group attempts by quiz_id
+  attempts_map = defaultdict(list)
+  for uq in taken_rows:
+    quiz_id = uq['Quiz']._row_id
+    attempts_map[quiz_id].append(uq)
+
+  # 4. Build the flat result list
+  result = []
+  for quiz in all_quizzes:
+    quiz_id  = quiz._row_id
+    attempts = attempts_map.get(quiz_id, [])
+
+    if attempts:
+      # Pick the fastest attempt (smallest Time).  
+      # For latest by date, swap min() → max() and key→ lambda x: x['Date'].
+      best = min(attempts, key=lambda x: x['Time'])
+      taken = True
+      time  = best['Time']
+      date  = best['Date']
+    else:
+      taken = False
+      time  = None
+      date  = None
+
+    result.append({
+      'id'    : quiz.get_id(),       # optional, if you need it later
+      'title' : quiz['Title'],
+      'taken' : taken,
+      'time'  : time,
+      'date'  : date
+    })
+
+  return result
+
 
 
 @anvil.server.callable
