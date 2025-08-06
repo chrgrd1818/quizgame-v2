@@ -9,7 +9,9 @@
       <div class="placeholder anvil-designer-only" anvil-if-slot-empty="title" anvil-drop-here>Drop title here</div>
     </div>
     <div class="app-bar-nav" anvil-slot="nav-right">
-      <div class="placeholder anvil-designer-only" anvil-if-slot-empty="nav-right" anvil-drop-here>Drop a FlowPanel here</div>
+      <button class="menu-toggle">0</button>
+      <nav class="placeholder anvil-designer-only nav-links" anvil-if-slot-empty="nav-right" anvil-drop-here>Drop a FlowPanel here</nav>
+     
     </div>
     <div style="clear:both"></div>
   </div>
@@ -35,6 +37,8 @@
   var ln = $('.structure > .nav-holder > .left-nav');
   var lnp = $('.structure > .nav-holder > .left-nav-placeholder');
   var appBar = $('.app-bar')[0];
+
+
   
   function hideSidebar() {
     ln.animate({left: -ln.outerWidth()}, function() {
@@ -125,4 +129,9 @@
   addMarginToContent()
   window.addEventListener('resize', addMarginToContent);
  
+</script>
+<script>
+  document.querySelector('.menu-toggle').addEventListener('click', () => {
+    document.querySelector('.app-bar-nav').classList.toggle('active');
+  });
 </script>

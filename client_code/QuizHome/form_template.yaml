@@ -13,14 +13,17 @@ components:
   name: content_panel
   properties: {}
   type: ColumnPanel
+- layout_properties: {slot: title}
+  name: label_1
+  properties: {text: Quiz}
+  type: Label
 - components:
-  - event_bindings: {click: link_game_click}
-    name: link_game
-    properties: {text: Game}
+  - event_bindings: {click: link_logout_click}
+    name: link_logout
+    properties: {role: body, text: logout, visible: true}
     type: Link
   - components: []
     event_bindings: {click: admin_link_click}
-    layout_properties: {}
     name: admin_link
     properties: {text: Admin}
     type: Link
@@ -29,18 +32,15 @@ components:
     name: link_account
     properties: {text: Account, visible: true}
     type: Link
-  - event_bindings: {click: link_logout_click}
-    name: link_logout
-    properties: {role: body, text: logout, visible: true}
+  - components: []
+    event_bindings: {click: link_game_click}
+    name: link_game
+    properties: {role: null, text: Game}
     type: Link
   layout_properties: {slot: nav-right}
-  name: navbar_links
+  name: flow_panel_1
   properties: {}
   type: FlowPanel
-- layout_properties: {slot: title}
-  name: label_1
-  properties: {text: Quiz}
-  type: Label
 container:
   properties: {html: '@theme:standard-page.html'}
   type: HtmlTemplate
