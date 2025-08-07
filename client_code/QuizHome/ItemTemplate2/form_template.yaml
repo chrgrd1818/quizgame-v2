@@ -7,8 +7,7 @@ components:
       name: label_1
       properties: {}
       type: Label
-    - data_bindings:
-      - {code: 'self.item[''File'']', property: tag, writeback: false}
+    - data_bindings: []
       event_bindings: {click: button_play_click}
       layout_properties: {expand: false}
       name: button_play

@@ -23,7 +23,7 @@ class QuizHome(QuizHomeTemplate):
   def play_quiz(self, quiz, **event_args):
       if quiz:
         url = quiz['File']
-        title = quiz['Title']
+       # title = quiz['Title']
         load = anvil.server.call('fetch_quiz_from_url', url)
         if load:
           load['quiz_selected']=quiz

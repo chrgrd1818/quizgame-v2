@@ -1,0 +1,41 @@
+components_by_slot:
+  content_slot:
+  - event_bindings: {tick: timer_next_tick}
+    layout_properties: {}
+    name: timer_next
+    properties: {interval: null}
+    type: Timer
+  - layout_properties: {}
+    name: lbl_title
+    properties: {align: center}
+    type: Label
+  - layout_properties: {}
+    name: lbl_level
+    properties: {align: center, bold: true, font: '', font_size: 22}
+    type: Label
+  - layout_properties: {}
+    name: progress_panel
+    properties: {align: center}
+    type: FlowPanel
+  - layout_properties: {}
+    name: spacer_1
+    properties: {height: 32}
+    type: Spacer
+  - layout_properties: {}
+    name: lbl_question
+    properties: {align: center, bold: false, font_size: 36}
+    type: Label
+  - layout_properties: {}
+    name: spacer_2
+    properties: {height: 32}
+    type: Spacer
+  - layout_properties: {}
+    name: options_panel
+    properties: {align: center}
+    type: FlowPanel
+  - layout_properties: {}
+    name: lbl_feedback
+    properties: {align: center, font_size: 18}
+    type: Label
+is_package: true
+layout: {type: 'form:Base'}
