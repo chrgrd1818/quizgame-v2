@@ -15,6 +15,11 @@ components:
     name: link_quizzes
     properties: {text: Quizzes}
     type: Link
+  - event_bindings: {click: link_game_click}
+    layout_properties: {}
+    name: link_game
+    properties: {text: Game}
+    type: Link
   - layout_properties: {}
     name: link_2
     properties: {text: Account}

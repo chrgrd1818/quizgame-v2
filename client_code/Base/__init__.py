@@ -19,3 +19,6 @@ class Base(BaseTemplate):
 
   def link_quizzes_click(self, **event_args):
     open_form("QuizCatalogue")
+
+  def link_game_click(self, **event_args):
+    open_form("GameForm")
