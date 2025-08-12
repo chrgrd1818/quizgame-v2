@@ -63,7 +63,8 @@ class QuizPlay2(QuizPlay2Template):
     self.lbl_level.text    = f"Niveau {self.current_level} / {len(self.level_keys)}"
     self.lbl_question.text = question['text']
     self.lbl_feedback.text = ""
-
+    self.panel_quiz.border="0px"
+    
     ## butoons options
     self.options_panel.clear() 
     opts = question['options'].copy()
@@ -129,6 +130,7 @@ class QuizPlay2(QuizPlay2Template):
   def feedback_ok(self):
     self.lbl_feedback.text = self.CORRECT
     self.lbl_feedback.foreground= "Green"
+    self.panel_quiz.border="10px Solid Green"
     self.progress_shapes[self.current_q_idx].foreground = "green"
     self.progress_shapes[self.current_q_idx].icon = "fa:check-circle"
 
@@ -141,6 +143,7 @@ class QuizPlay2(QuizPlay2Template):
   def feedback_ko(self):
     self.lbl_feedback.text = self.NOTCORRECT
     self.lbl_feedback.foreground= "Red"
+    self.panel_quiz.border="10px Solid Red"
     for btn in self.progress_shapes:
       btn.icon = "fa:check-circle"
       btn.foreground = "#777"
@@ -155,6 +158,7 @@ class QuizPlay2(QuizPlay2Template):
     self.lbl_level.text = ""
     self.progress_panel.clear()
     self.progress_shapes = []
+    self.panel_quiz.border="0px"
     
     if anvil.users.get_user():
       self.save_quiz(elapsed)

@@ -9,6 +9,12 @@ components:
     name: lbl_level
     properties: {align: center, bold: true, font_size: 24}
     type: Label
+  - data_bindings:
+    - {code: 'self.item['''']', property: text, writeback: false}
+    layout_properties: {grid_position: 'JDLBIW,PWQFCE'}
+    name: label_title
+    properties: {text: Play}
+    type: Label
   - components: []
     layout_properties: {full_width_row: false, grid_position: 'JDLBIW,KUUMOP'}
     name: progress_panel
@@ -56,12 +62,6 @@ components:
   name: navbar_links
   properties: {}
   type: FlowPanel
-- data_bindings:
-  - {code: 'self.item['''']', property: text, writeback: false}
-  layout_properties: {slot: title}
-  name: label_title
-  properties: {text: Play}
-  type: Label
 container:
   properties: {html: '@theme:standard-page.html'}
   type: HtmlTemplate
