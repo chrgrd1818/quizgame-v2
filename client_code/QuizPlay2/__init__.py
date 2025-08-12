@@ -8,6 +8,7 @@ from anvil.tables import app_tables
 from datetime import datetime
 import random
 
+
 def group_questions_by_level(questions):
   levels = {}
   for q in questions:
@@ -25,6 +26,8 @@ class QuizPlay2(QuizPlay2Template):
     self.CORRECT = "Bravo!"
     self.NOTCORRECT = "Essaye encore!"
     self.GAGNE = "Felicitations! Quiz termine en"
+    self.IMG_DEFAULT = "_/theme/QuizPicts/dummy_img.jpg"
+    
     # Setup timer (interval = seconds)
     self.timer_next.interval  = 0
     self.quiz = quiz_data["quiz_selected"]
@@ -61,14 +64,21 @@ class QuizPlay2(QuizPlay2Template):
     
     self.update_UI(current_q, self.current_q_idx)
 
+ 
+
+      
   def update_UI(self, question, id):
     self.lbl_level.text    = f"Niveau {self.current_level} / {len(self.level_keys)}"
     self.lbl_question.text = question['text']
     self.lbl_feedback.text = ""
     self.panel_quiz.border="0px"
-    self.image_question.source = "_/theme/QuizPicts/" + self.file + "/" + str(id+1) + ".jpg"
-    
-    
+
+    img_link = "_/theme/QuizPicts/" + self.file + "/" + str(id+1) + ".jpg"
+    if is_valid_url(img_link):
+      self.image_question.source = img_link
+    else:
+      self.image_question.source = self.IMG_DEFAULT
+
     ## butoons options
     self.options_panel.clear() 
     opts = question['options'].copy()
