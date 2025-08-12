@@ -31,6 +31,7 @@ class QuizPlay2(QuizPlay2Template):
     # Organize questions
     self.levels = group_questions_by_level(quiz_data['questions'])
     self.title = quiz_data['quiz_selected']['Title']
+    self.file = quiz_data['quiz_selected']['File']
     if not self.levels:
       print("No questions found.")
       return
@@ -57,13 +58,16 @@ class QuizPlay2(QuizPlay2Template):
 
     questions = self.levels[self.current_level]
     current_q = questions[self.current_q_idx]
-    self.update_UI(current_q)
+    
+    self.update_UI(current_q, self.current_q_idx)
 
-  def update_UI(self, question):
+  def update_UI(self, question, id):
     self.lbl_level.text    = f"Niveau {self.current_level} / {len(self.level_keys)}"
     self.lbl_question.text = question['text']
     self.lbl_feedback.text = ""
     self.panel_quiz.border="0px"
+    self.image_question.source = "_/theme/QuizPicts/" + self.file + "/" + str(id+1) + ".jpg"
+    
     
     ## butoons options
     self.options_panel.clear() 
