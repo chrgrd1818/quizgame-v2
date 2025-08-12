@@ -26,10 +26,12 @@ class QuizPlay2(QuizPlay2Template):
     self.CORRECT = "Bravo!"
     self.NOTCORRECT = "Essaye encore!"
     self.GAGNE = "Felicitations! Quiz termine en"
-    self.IMG_DEFAULT = "_/theme/QuizPicts/dummy_img.jpg"
+    self.IMG_DEFAULT = "_/theme/dummy_img.jpg"
     
-    # Setup timer (interval = seconds)
+    # Setup timer (interval and full = seconds)
     self.timer_next.interval  = 0
+    self.timer_chrono.interval = 1
+     
     self.quiz = quiz_data["quiz_selected"]
     # Organize questions
     self.levels = group_questions_by_level(quiz_data['questions'])
@@ -48,6 +50,11 @@ class QuizPlay2(QuizPlay2Template):
     self.progress_shapes = []
     self.lbl_title.text =  self.title
     self.show_question()
+
+  def timer_chrono_tick(self, **event_args):
+    """Fires every second to refresh the elapsed-time display."""
+    delta_seconds = int((datetime.utcnow() - self.start_time).total_seconds())
+    self.lbl_chrono.text = f"{delta_seconds}s"
 
   def show_question(self):
     if self.current_level_idx >= len(self.level_keys):
@@ -73,11 +80,11 @@ class QuizPlay2(QuizPlay2Template):
     self.lbl_feedback.text = ""
     self.panel_quiz.border="0px"
 
-    img_link = "_/theme/QuizPicts/" + self.file + "/" + str(id+1) + ".jpg"
-    if is_valid_url(img_link):
-      self.image_question.source = img_link
-    else:
-      self.image_question.source = self.IMG_DEFAULT
+   
+    #img_path = "" + self.file + "_" + str(id+1) + ""
+    img_path = self.file + "_" + str(id+1)
+    media = anvil.server.call('fetch_data_image', img_path)
+    self.image_question.source = media or self.IMG_DEFAULT
 
     ## butoons options
     self.options_panel.clear() 
@@ -165,14 +172,17 @@ class QuizPlay2(QuizPlay2Template):
     self.current_q_idx = 0
 
   def complete_quiz(self):
+    self.timer_chrono.interval  = 0
     elapsed = (datetime.utcnow() - self.start_time).seconds
     self.lbl_question.text   = f" {self.GAGNE} {elapsed}s"
     self.lbl_feedback.text   = ""
     self.options_panel.clear() 
     self.lbl_level.text = ""
+    self.lbl_chrono.text = ""
     self.progress_panel.clear()
     self.progress_shapes = []
     self.panel_quiz.border="0px"
+    self.image_question.visible = False
     
     if anvil.users.get_user():
       self.save_quiz(elapsed)

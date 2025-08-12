@@ -10,6 +10,13 @@ import anvil.tz
 import requests
 from collections import defaultdict
 
+
+@anvil.server.callable
+def fetch_data_image(path):
+  row = app_tables.images.get(ImageID=path)
+  return row['Image'] if row else None
+
+  
 @anvil.server.callable
 def get_quizzes_for_user(user_id):
   # 1. Look up the user
