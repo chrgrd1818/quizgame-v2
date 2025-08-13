@@ -20,8 +20,14 @@ components:
     name: link_game
     properties: {text: Game}
     type: Link
-  - layout_properties: {}
-    name: link_2
+  - event_bindings: {click: link_board_click}
+    layout_properties: {}
+    name: link_board
+    properties: {text: Board}
+    type: Link
+  - event_bindings: {click: link_account_click}
+    layout_properties: {}
+    name: link_account
     properties: {text: Account}
     type: Link
   layout_properties: {slot: nav-right}

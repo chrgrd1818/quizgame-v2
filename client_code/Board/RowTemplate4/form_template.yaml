@@ -1,0 +1,8 @@
+components:
+- event_bindings: {click: button_achievements_click}
+  layout_properties: {column: LLVCLG}
+  name: button_achievements
+  properties: {role: outlined-button, text: Achievements}
+  type: Button
+container: {type: DataRowPanel}
+is_package: true

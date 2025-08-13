@@ -126,3 +126,8 @@ def get_all_score_quiz():
 @anvil.server.callable
 def get_user():
   return anvil.users.get_user()
+
+@anvil.server.callable
+def get_group_users(group):
+  rows = app_tables.users.search(group=group)
+  return rows

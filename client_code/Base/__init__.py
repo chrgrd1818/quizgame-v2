@@ -22,3 +22,9 @@ class Base(BaseTemplate):
 
   def link_game_click(self, **event_args):
     open_form("GameForm")
+
+  def link_account_click(self, **event_args):
+    open_form("Account2")
+
+  def link_board_click(self, **event_args):
+    open_form("Board")
