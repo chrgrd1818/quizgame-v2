@@ -82,7 +82,7 @@ class QuizPlay2(QuizPlay2Template):
 
    
     #img_path = "" + self.file + "_" + str(id+1) + ""
-    img_path = self.file + "_" + str(id+1)
+    img_path = self.file + "__" + str(id+1)
     media = anvil.server.call('fetch_data_image', img_path)
     self.image_question.source = media or self.IMG_DEFAULT
 
