@@ -79,7 +79,7 @@ class QuizPlay2(QuizPlay2Template):
 
    
     #img_path = "" + self.file + "_" + str(id+1) + ""
-    img_path = self.file + "__" + str(id+1)
+    img_path = self.file + "__" + str(question['id'])
     media = anvil.server.call('fetch_data_image', img_path)
     self.image_question.source = media or self.IMG_DEFAULT
 
@@ -111,7 +111,7 @@ class QuizPlay2(QuizPlay2Template):
     for _ in questions:
       btn = Button(
         text=" ",
-        font_size = "12",
+        font_size = "16",
         role="btn_progress",
         align="center",
         bold= True,
