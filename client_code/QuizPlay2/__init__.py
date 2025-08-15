@@ -3,7 +3,7 @@ from anvil import *
 import anvil.server
 import anvil.users
 import anvil.tables as tables
-import anvil.tables.query as q
+import anvil.tables.query as qt
 from anvil.tables import app_tables
 from datetime import datetime
 import random
@@ -70,9 +70,6 @@ class QuizPlay2(QuizPlay2Template):
     current_q = questions[self.current_q_idx]
     
     self.update_UI(current_q, self.current_q_idx)
-
- 
-
       
   def update_UI(self, question, id):
     self.lbl_level.text    = f"Niveau {self.current_level} / {len(self.level_keys)}"
@@ -98,7 +95,7 @@ class QuizPlay2(QuizPlay2Template):
         width   = "full-width",         # full-width, or whatever you need
         align   = "center",
         background= "theme:Primary Container",
-        font_size= 32
+        font_size= 24
       )
 
       btn.correct = opt['correct']
@@ -114,7 +111,7 @@ class QuizPlay2(QuizPlay2Template):
     for _ in questions:
       btn = Button(
         text=" ",
-        font_size = "50",
+        font_size = "12",
         role="btn_progress",
         align="center",
         bold= True,
