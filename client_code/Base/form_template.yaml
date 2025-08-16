@@ -8,11 +8,6 @@ components:
   name: content_panel
   properties: {background: ''}
   type: ColumnPanel
-- components: []
-  layout_properties: {slot: nav-right}
-  name: navbar_links
-  properties: {}
-  type: FlowPanel
 - event_bindings: {click: link_home_click}
   layout_properties: {slot: title}
   name: link_home

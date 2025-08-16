@@ -8,9 +8,9 @@
     <div class="title" anvil-slot="title">
       <div class="placeholder anvil-designer-only" anvil-if-slot-empty="title" anvil-drop-here>Drop title here</div>
     </div>
-    <nav id="app-bar-nav" class="app-bar-nav nav-links" anvil-slot="nav-right">
+    <div class="app-bar-nav" anvil-slot="nav-right">
       <div class="placeholder anvil-designer-only" anvil-if-slot-empty="nav-right" anvil-drop-here>Drop a FlowPanel here</div>
-    </nav>
+    </div>
     <div style="clear:both"></div>
   </div>
 
@@ -20,7 +20,7 @@
     <div class="left-nav-placeholder anvil-designer-only" anvil-if-slot-empty="left-nav" anvil-drop-slot="left-nav">
       <div class="prompt">To add a sidebar, drop a ColumnPanel here.</div>
     </div>
-    
+
     <div class="content">
       <div anvil-slot-repeat="default" class="anvil-measure-this"></div>
       <div class="placeholder drop-here" anvil-if-slot-empty="default" anvil-drop-slot="default">Drop a ColumnPanel here.</div>
@@ -30,14 +30,12 @@
   <div class="nav-shield"></div>
 </div>
 <div anvil-drop-default anvil-drop-redirect=".placeholder" anvil-drop-container=".anvil-container"></div>
- 
+
 <script>
   var ln = $('.structure > .nav-holder > .left-nav');
   var lnp = $('.structure > .nav-holder > .left-nav-placeholder');
   var appBar = $('.app-bar')[0];
 
-
-  
   function hideSidebar() {
     ln.animate({left: -ln.outerWidth()}, function() {
       ln.removeClass("in-transition shown").addClass("hidden");
@@ -48,7 +46,7 @@
       $('.content').animate({'margin-left':0}, function(){})
     }
   }
-  
+
   function showSidebar() {
     $('.nav-shield').addClass("shown");
     ln.addClass("shown").removeClass("hidden").css({left: "-100%"}).css({left: -ln.outerWidth()}).animate({left: 0}, function() {
@@ -59,7 +57,7 @@
       $('.content').animate({'margin-left': ln.outerWidth().toString() + 'px'}, function(){})
     } 
   }
-  
+
   $('.sidebar-toggle, .nav-shield').off('click').on('click', function() { 
     if (ln.is(":visible") || $('.nav-shield').is(".shown")) {
       hideSidebar();
@@ -72,12 +70,12 @@
       $('.nav-shield').trigger('click');
     }
   });
-  
-  document.addEventListener('scroll', function() {
+
+  document.addEventListener('scroll', function(event) {
     if (appBar.classList.contains('scrolled')) {
       if (window.scrollY === 0) {
         appBar.classList.remove('scrolled')
-      }
+      } 
     }
     else {
       appBar.classList.add('scrolled')
@@ -86,11 +84,10 @@
 
   function addMarginToContent() {
     //check if there is a free banner and set the top margin accordiningly
-    let topMargin;
     if ($('#anvil-header').css('display') == 'block') {
-      topMargin = appBar.clientHeight + 50
+      var topMargin = appBar.clientHeight + 50
     } else {
-      topMargin = appBar.clientHeight
+      var topMargin = appBar.clientHeight
     }
     //the left-nav-placeholder in the designer needs to shift down for the app bar
     lnp.css({'top': appBar.clientHeight.toString() + 'px'})
@@ -123,13 +120,8 @@
       }
     }
   }
-  
+
   addMarginToContent()
   window.addEventListener('resize', addMarginToContent);
- 
-</script>
-<script>
-  document.querySelector('.menu-toggle').addEventListener('click', () => {
-    document.querySelector('.app-bar-nav').classList.toggle('menu_active');
-  });
+
 </script>
