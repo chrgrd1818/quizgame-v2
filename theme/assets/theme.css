@@ -1047,24 +1047,3 @@ div.plot-container.plotly svg.main-svg {
 .anvil-spinner {
     --anvil-spinner-bg: %color:Surface Variant%;
 }
-
-/*menu*/
-#app-bar-nav.nav-links .menu-toggle {
-  display: none;
-  background: none;
-  border: none;
-  font-size: 24px;
-}
-
-@media (max-width: 768px) {
-  #app-bar-nav.nav-links a{
-    display: none;
-  }
-
-  #app-bar-nav.nav-links.menu_active a{
-    display: flex;
-  }
-  #app-bar-nav.nav-links .menu-toggle {
-    display: block;
-  }
-}

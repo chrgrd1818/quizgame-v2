@@ -1,7 +1,7 @@
 components_by_slot:
   content_slot:
   - components:
-    - layout_properties: {expand: true, width: null}
+    - layout_properties: {expand: false, width: null}
       name: repeating_panel_quiz
       properties: {item_template: QuizCatalogue.ItemTemplate1, visible: true}
       type: RepeatingPanel

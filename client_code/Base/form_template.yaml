@@ -8,28 +8,7 @@ components:
   name: content_panel
   properties: {background: ''}
   type: ColumnPanel
-- components:
-  - data_bindings: []
-    event_bindings: {click: link_quizzes_click}
-    layout_properties: {}
-    name: link_quizzes
-    properties: {text: Quizzes}
-    type: Link
-  - event_bindings: {click: link_game_click}
-    layout_properties: {}
-    name: link_game
-    properties: {text: Game}
-    type: Link
-  - event_bindings: {click: link_board_click}
-    layout_properties: {}
-    name: link_board
-    properties: {text: Board}
-    type: Link
-  - event_bindings: {click: link_account_click}
-    layout_properties: {}
-    name: link_account
-    properties: {text: Account}
-    type: Link
+- components: []
   layout_properties: {slot: nav-right}
   name: navbar_links
   properties: {}
@@ -39,6 +18,31 @@ components:
   name: link_home
   properties: {icon: 'fa:gamepad', text: QuizGame}
   type: Link
+- components:
+  - event_bindings: {click: link_quizzes_2_click}
+    layout_properties: {grid_position: 'PFACJX,EFRJDV'}
+    name: link_quizzes_2
+    properties: {text: Quizzes}
+    type: Link
+  - event_bindings: {click: link_board_click}
+    layout_properties: {grid_position: 'ZCEJDQ,BHBGQG'}
+    name: link_board
+    properties: {text: Board}
+    type: Link
+  - event_bindings: {click: link_game_2_click}
+    layout_properties: {grid_position: 'VZIQMA,GMQOJM'}
+    name: link_game_2
+    properties: {text: Game, visible: false}
+    type: Link
+  - event_bindings: {click: link_account_click}
+    layout_properties: {grid_position: 'LSULJO,JPHAWC'}
+    name: link_account
+    properties: {text: Account}
+    type: Link
+  layout_properties: {slot: left-nav}
+  name: column_panel_side
+  properties: {}
+  type: ColumnPanel
 container:
   properties: {html: '@theme:standard-page.html'}
   type: HtmlTemplate

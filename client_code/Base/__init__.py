@@ -17,14 +17,14 @@ class Base(BaseTemplate):
   def link_home_click(self, **event_args):
     open_form("Home")
 
-  def link_quizzes_click(self, **event_args):
-    open_form("QuizCatalogue")
-
-  def link_game_click(self, **event_args):
-    open_form("GameForm")
-
   def link_account_click(self, **event_args):
     open_form("Account2")
 
   def link_board_click(self, **event_args):
     open_form("Board")
+
+  def link_game_2_click(self, **event_args):
+    open_form("GameForm")
+
+  def link_quizzes_2_click(self, **event_args):
+    open_form("QuizCatalogue")
