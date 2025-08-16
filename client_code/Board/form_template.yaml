@@ -37,7 +37,7 @@ components_by_slot:
         columns:
         - {data_key: title, id: JKSDUP, title: Title}
         - {data_key: taken, id: VJQQOR, title: Complete}
-        - {data_key: time, id: OJLQEN, title: Best Time}
+        - {data_key: time, id: OJLQEN, title: Best Time (s)}
       type: DataGrid
     layout_properties: {}
     name: column_panel_2
