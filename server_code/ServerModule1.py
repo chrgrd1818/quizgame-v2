@@ -10,7 +10,15 @@ import anvil.tz
 import requests
 from collections import defaultdict
 
-
+@staticmethod
+def seconds_to_min_sec(seconds):
+  """Converts seconds to MM:SS format."""
+  if not isinstance(seconds, int) or seconds is None or seconds < 0:
+    return "-:-"  # Valeur invalide ou nulle → retourne 00:00
+  minutes = seconds // 60
+  secs = seconds % 60
+  return f"{minutes:02}:{secs:02}"
+    
 @anvil.server.callable
 def fetch_data_image(path):
   row = app_tables.images.get(ImageID=path)
@@ -44,20 +52,24 @@ def get_quizzes_for_user(user_id):
       # Pick the fastest attempt (smallest Time).  
       # For latest by date, swap min() → max() and key→ lambda x: x['DateTime'].
       best = min(attempts, key=lambda x: x['Time'])
-      taken = True
+      taken = True,
+      score = best['Score'],
       time  = best['Time']
       date  = best['DateTime']
     else:
       taken = False
       time  = None
       date  = None
+      score = None
+ 
   
     result.append({
       'id'    : quiz.get_id(),       # optional, if you need it later
       'title' : quiz['Title'],
       'taken' : "Yes" if taken else "No",
-      'time'  : time,
-      'date'  : date
+      'time'  : seconds_to_min_sec(time),
+      'date'  : date,
+      'score': score if score else "-"
     })
 
   return result
@@ -105,7 +117,7 @@ def set_score_quiz(quiz, time):
   user = anvil.users.get_user()
   if not user:
     raise Exception("No User or Login required")
-  app_tables.user_quiz.add_row(User=user, Quiz=quiz, Time=time, DateTime=datetime.utcnow())
+  app_tables.user_quiz.add_row(User=user, Quiz=quiz, Score=quiz['nquests'], Time=time, DateTime=datetime.utcnow())
 
 @anvil.server.callable
 def get_score_quiz(quiz):

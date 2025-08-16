@@ -13,9 +13,8 @@ components_by_slot:
       name: data_grid_1
       properties:
         columns:
-        - {data_key: group, expand: false, id: QGJEDL, title: Group, width: 152.5999755859375}
-        - {data_key: pseudo, expand: false, id: JKSDUP, title: Name, width: 138.39996337890625}
-        - {data_key: role, expand: false, id: VJQQOR, title: Role, width: 82.5999755859375}
+        - {data_key: pseudo, expand: false, id: JKSDUP, title: Name, width: 185}
+        - {data_key: group, expand: false, id: QGJEDL, title: Group, width: 176}
         - {data_key: '', id: LLVCLG, title: ''}
       type: DataGrid
     layout_properties: {}
@@ -37,6 +36,7 @@ components_by_slot:
         columns:
         - {data_key: title, id: JKSDUP, title: Title}
         - {data_key: taken, id: VJQQOR, title: Complete}
+        - {data_key: score, id: PYGOUN, title: Score}
         - {data_key: time, id: OJLQEN, title: Best Time (s)}
       type: DataGrid
     layout_properties: {}

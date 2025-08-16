@@ -7,7 +7,7 @@ import anvil.tables.query as qt
 from anvil.tables import app_tables
 from datetime import datetime
 import random
-
+from ..TimeHelper import TimeHelper as h
 
 def group_questions_by_level(questions):
   levels = {}
@@ -25,7 +25,7 @@ class QuizPlay2(QuizPlay2Template):
 
     self.CORRECT = "Bravo!"
     self.NOTCORRECT = "Essaye encore!"
-    self.GAGNE = "Felicitations! Quiz termine en"
+    self.GAGNE = "Felicitations! Quiz terminé en"
     self.IMG_DEFAULT = "_/theme/dummy_img.jpg"
     
     # Setup timer (interval and full = seconds)
@@ -49,12 +49,15 @@ class QuizPlay2(QuizPlay2Template):
 
     self.progress_shapes = []
     self.lbl_title.text =  self.title
+
+    
     self.show_question()
 
   def timer_chrono_tick(self, **event_args):
-    """Fires every second to refresh the elapsed-time display."""
+    
     delta_seconds = int((datetime.utcnow() - self.start_time).total_seconds())
-    self.lbl_chrono.text = f"{delta_seconds}s"
+    min_sec_format = h.seconds_to_min_sec(delta_seconds)
+    self.lbl_chrono.text = f"{min_sec_format}s"
 
   def show_question(self):
     if self.current_level_idx >= len(self.level_keys):
@@ -75,7 +78,10 @@ class QuizPlay2(QuizPlay2Template):
     self.lbl_level.text    = f"Niveau {self.current_level} / {len(self.level_keys)}"
     self.lbl_question.text = question['text']
     self.lbl_feedback.text = ""
-    self.panel_quiz.border="0px"
+    self.lbl_question.font_size = 24
+    self.panel_quiz.border="5px solid #FFFFFF"
+   
+    self.panel_doafter.visible = False
 
    
     #img_path = "" + self.file + "_" + str(id+1) + ""
@@ -95,7 +101,7 @@ class QuizPlay2(QuizPlay2Template):
         width   = "full-width",         # full-width, or whatever you need
         align   = "center",
         background= "theme:Primary Container",
-        font_size= 24
+        font_size= 20
       )
 
       btn.correct = opt['correct']
@@ -171,15 +177,18 @@ class QuizPlay2(QuizPlay2Template):
   def complete_quiz(self):
     self.timer_chrono.interval  = 0
     elapsed = (datetime.utcnow() - self.start_time).seconds
-    self.lbl_question.text   = f" {self.GAGNE} {elapsed}s"
+    min_sec_format = h.seconds_to_min_sec(elapsed)
+    self.lbl_question.text   = f" {self.GAGNE} {min_sec_format}s"
+    self.lbl_question.font_size   = 36
     self.lbl_feedback.text   = ""
     self.options_panel.clear() 
     self.lbl_level.text = ""
     self.lbl_chrono.text = ""
     self.progress_panel.clear()
     self.progress_shapes = []
-    self.panel_quiz.border="0px"
+    self.panel_quiz.border="5px solid #FFFFFF"
     self.image_question.visible = False
+    self.panel_doafter.visible = True
     
     if anvil.users.get_user():
       self.save_quiz(elapsed)
@@ -194,4 +203,10 @@ class QuizPlay2(QuizPlay2Template):
 
   def link_quiz_click(self, **event_args):
     open_form("QuizHome")
+
+  def button_refaire_click(self, **event_args):
+    open_form("QuizCatalogue")
+
+  def button_scorepage_click(self, **event_args):
+    open_form("Board")
 

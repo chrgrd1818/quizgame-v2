@@ -5,7 +5,13 @@ components:
       - {code: 'self.item[''Title'']', property: text, writeback: false}
       layout_properties: {grid_position: 'CIASEH,BEZDBW'}
       name: label_1
-      properties: {align: center, bold: false, font_size: 24, text: Title}
+      properties: {align: center, bold: false, font_size: 24, spacing_below: none, text: Title}
+      type: Label
+    - data_bindings:
+      - {code: 'self.item[''description'']', property: text, writeback: false}
+      layout_properties: {full_width_row: false, grid_position: 'GVYOUS,GHEFGB'}
+      name: label_2
+      properties: {align: center, bold: false, font_size: 14, foreground: 'theme:Secondary', italic: false, spacing_above: none, spacing_below: medium}
       type: Label
     - event_bindings: {click: button_play_click}
       layout_properties: {grid_position: 'TFKZRW,FRIYFB'}

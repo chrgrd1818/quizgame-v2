@@ -42,24 +42,39 @@ components:
   name: column_panel_side
   properties: {}
   type: ColumnPanel
-- event_bindings: {click: link_home_click}
-  layout_properties: {slot: nav-right}
-  name: link_home
-  properties:
-    bold: false
-    font_size: 20
-    icon: fa:play-circle
-    icon_align: left
-    spacing:
-      padding: [null, null, '0', null]
-    spacing_below: small
-    text: QuizGame
-    underline: false
-  type: Link
 - layout_properties: {slot: title}
   name: label_usercheck
   properties: {text: '?'}
   type: Label
+- components:
+  - layout_properties: {width: 46.7999267578125}
+    name: image_1
+    properties:
+      height: 51.59999084472656
+      margin: ['0', '0', null, '0']
+      source: _/theme/logo_gamequiz_1.png
+    type: Image
+  - components: []
+    data_bindings: []
+    event_bindings: {click: link_home_click}
+    layout_properties: {expand: false}
+    name: link_home
+    properties:
+      bold: true
+      col_spacing: small
+      font_size: 16
+      icon: ''
+      icon_align: left
+      spacing:
+        padding: [null, null, '0', '0']
+      spacing_below: small
+      text: QuizGame
+      underline: false
+    type: Link
+  layout_properties: {slot: nav-right}
+  name: flow_panel_1
+  properties: {align: left, gap: none, role: null, vertical_align: middle}
+  type: FlowPanel
 container:
   properties: {html: '@theme:standard-page.html'}
   type: HtmlTemplate

@@ -40,7 +40,7 @@ components_by_slot:
       type: FlowPanel
     - layout_properties: {grid_position: 'IIHDDA,JLPAPK'}
       name: image_question
-      properties: {background: 'theme:Disabled Container', display_mode: original_size, height: '300', source: '', visible: true}
+      properties: {background: 'theme:Disabled Container', display_mode: shrink_to_fit, height: '280', source: '', visible: true}
       type: Image
     - layout_properties: {grid_position: 'ECCSWK,UCBCYA'}
       name: lbl_question
@@ -54,6 +54,21 @@ components_by_slot:
       name: lbl_feedback
       properties: {align: center, font_size: 32}
       type: Label
+    - components:
+      - event_bindings: {click: button_refaire_click}
+        layout_properties: {grid_position: 'VZZQMC,OPQMVK'}
+        name: button_refaire
+        properties: {align: center, role: outlined-button, text: REFAIRE}
+        type: Button
+      - event_bindings: {click: button_scorepage_click}
+        layout_properties: {grid_position: 'YUUZEK,FJJHAK'}
+        name: button_scorepage
+        properties: {role: outlined-button, text: VOIR SCORES}
+        type: Button
+      layout_properties: {full_width_row: false, grid_position: 'YHELYT,YRVYXM'}
+      name: panel_doafter
+      properties: {visible: true}
+      type: ColumnPanel
     data_bindings: []
     layout_properties: {full_width_row: true, row_background: ''}
     name: panel_quiz

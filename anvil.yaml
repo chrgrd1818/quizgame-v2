@@ -46,6 +46,12 @@ db_schema:
     - admin_ui: {order: 4, width: 200}
       name: order
       type: number
+    - admin_ui: {order: 5, width: 200}
+      name: description
+      type: string
+    - admin_ui: {order: 6, width: 200}
+      name: nquests
+      type: number
     server: full
     title: Quizzes
   user_game:
@@ -76,13 +82,16 @@ db_schema:
     - admin_ui: {width: 200}
       name: Time
       type: number
-    - admin_ui: {width: 200}
+    - admin_ui: {order: 0.5, width: 200}
       name: Quiz
       target: quizzes
       type: link_single
     - admin_ui: {width: 200}
       name: DateTime
       type: datetime
+    - admin_ui: {order: 1, width: 200}
+      name: Score
+      type: number
     server: full
     title: User_quiz
   users:
@@ -124,9 +133,10 @@ db_schema:
     server: full
     title: Users
 dependencies: []
-name: Quiz2
+metadata: {description: test your knowledge and learn with fun quiz, logo_img: 'asset:logo_gamequiz_1.png', title: QuizGame_v2}
+name: QuizGame_v2
 native_deps: null
-package_name: Quiz2
+package_name: QuizGame_v2
 renamed: true
 runtime_options:
   client_version: '3'
@@ -135,7 +145,7 @@ runtime_options:
   server_version: python3-sandbox
   version: 3
 services:
-- client_config: {}
+- client_config: {enable_v2: true}
   server_config: {}
   source: /runtime/services/tables.yml
 - client_config: {allow_remember_me: true, allow_signup: true, confirm_email: false, enable_automatically: true, remember_me_days: 30, use_email: true}
