@@ -2,7 +2,9 @@ components:
 - event_bindings: {click: button_achievements_click}
   layout_properties: {column: LLVCLG}
   name: button_achievements
-  properties: {align: center, role: outlined-button, text: View Scores}
+  properties: {align: right, enabled: true, role: tonal-button, text: View Scores, visible: true}
   type: Button
-container: {type: DataRowPanel}
+container:
+  properties: {align: left, auto_display_data: true}
+  type: DataRowPanel
 is_package: true
