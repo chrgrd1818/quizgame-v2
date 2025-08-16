@@ -16,12 +16,13 @@ components_by_slot:
         name: lbl_title
         properties: {align: left, bold: true, font_size: 18}
         type: Label
-      - name: lbl_chrono
-        properties: {align: right, bold: true, font_size: 18, text: '', visible: true}
+      - layout_properties: {}
+        name: lbl_chrono
+        properties: {align: right, bold: true, font_size: 18, foreground: 'theme:Primary', text: '', visible: true}
         type: Label
       layout_properties: {full_width_row: true, grid_position: 'MAYABL,JQRYMX'}
       name: flow_panel_1
-      properties: {align: center, border: '', gap: medium}
+      properties: {align: center, border: '', foreground: 'theme:Primary', gap: medium}
       type: FlowPanel
     - components:
       - components: []

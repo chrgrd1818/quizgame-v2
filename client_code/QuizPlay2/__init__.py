@@ -148,7 +148,7 @@ class QuizPlay2(QuizPlay2Template):
   def feedback_ok(self):
     self.lbl_feedback.text = self.CORRECT
     self.lbl_feedback.foreground= "Green"
-    self.panel_quiz.border="10px Solid Green"
+    self.panel_quiz.border="5px Solid Green"
     self.progress_shapes[self.current_q_idx].foreground = "green"
     self.progress_shapes[self.current_q_idx].icon = "fa:check-circle"
 
@@ -161,7 +161,7 @@ class QuizPlay2(QuizPlay2Template):
   def feedback_ko(self):
     self.lbl_feedback.text = self.NOTCORRECT
     self.lbl_feedback.foreground= "Red"
-    self.panel_quiz.border="10px Solid Red"
+    self.panel_quiz.border="5px Solid Red"
     for btn in self.progress_shapes:
       btn.icon = "fa:check-circle"
       btn.foreground = "#777"

@@ -13,16 +13,16 @@ class Account2(Account2Template):
     self.init_components(**properties)
 
     self.user = anvil.users.get_user()
-    if self.user:
-      print(f"user_id → {self.user.get_id()}")
-      print(f"user_name → {self.user['pseudo']}")
-    else:
+    if not self.user:
       anvil.users.login_with_form()
-    return
+      
+    
+    print(f"user_id → {self.user.get_id()}")
+    print(f"user_name → {self.user['pseudo']}")
+
+    self.label_username.text = self.user['pseudo']
+    self.label_userrole.text = self.user['role']
+    self.label_usergroup.text = self.user['group']
 
     # Any code you write here will run before the form opens.
-
-  def link_logout_click(self, **event_args):
-    anvil.users.logout()
-    open_form('Home')
 

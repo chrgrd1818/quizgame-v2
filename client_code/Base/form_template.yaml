@@ -6,38 +6,60 @@ components:
     type: ColumnPanel
   layout_properties: {slot: default}
   name: content_panel
-  properties: {background: ''}
+  properties: {background: '', spacing_above: none, spacing_below: none}
   type: ColumnPanel
-- event_bindings: {click: link_home_click}
-  layout_properties: {slot: title}
-  name: link_home
-  properties: {icon: 'fa:gamepad', text: QuizGame}
-  type: Link
 - components:
+  - layout_properties: {grid_position: 'TYBLHM,DBFKKD'}
+    name: label_1
+    properties: {text: MENU}
+    type: Label
   - event_bindings: {click: link_quizzes_2_click}
     layout_properties: {grid_position: 'PFACJX,EFRJDV'}
     name: link_quizzes_2
-    properties: {text: Quizzes}
+    properties: {icon: 'fa:question', text: Quizzes}
     type: Link
   - event_bindings: {click: link_board_click}
     layout_properties: {grid_position: 'ZCEJDQ,BHBGQG'}
     name: link_board
-    properties: {text: Board}
+    properties: {icon: 'fa:table', text: Board}
     type: Link
   - event_bindings: {click: link_game_2_click}
     layout_properties: {grid_position: 'VZIQMA,GMQOJM'}
     name: link_game_2
-    properties: {text: Game, visible: false}
+    properties: {icon: 'fa:gamepad', text: Game, visible: false}
     type: Link
   - event_bindings: {click: link_account_click}
     layout_properties: {grid_position: 'LSULJO,JPHAWC'}
     name: link_account
-    properties: {text: Account}
+    properties: {icon: 'fa:user', text: Account, visible: false}
+    type: Link
+  - event_bindings: {click: link_logout_click}
+    layout_properties: {grid_position: 'EUHXJX,IFAMJR'}
+    name: link_logout
+    properties: {icon: 'fa:sign-out', text: Log Out}
     type: Link
   layout_properties: {slot: left-nav}
   name: column_panel_side
   properties: {}
   type: ColumnPanel
+- event_bindings: {click: link_home_click}
+  layout_properties: {slot: nav-right}
+  name: link_home
+  properties:
+    bold: false
+    font_size: 20
+    icon: fa:play-circle
+    icon_align: left
+    spacing:
+      padding: [null, null, '0', null]
+    spacing_below: small
+    text: QuizGame
+    underline: false
+  type: Link
+- layout_properties: {slot: title}
+  name: label_usercheck
+  properties: {text: '?'}
+  type: Label
 container:
   properties: {html: '@theme:standard-page.html'}
   type: HtmlTemplate
@@ -45,5 +67,5 @@ is_package: true
 slots:
   content_slot:
     index: 0
-    set_layout_properties: {grid_position: 'PSJRBH,SYMWEU'}
+    set_layout_properties: {full_width_row: true, grid_position: 'PSJRBH,SYMWEU', row_background: ''}
     target: {name: column_panel_1, type: container}

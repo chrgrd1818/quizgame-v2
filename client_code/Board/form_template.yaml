@@ -13,9 +13,9 @@ components_by_slot:
       name: data_grid_1
       properties:
         columns:
-        - {data_key: group, id: QGJEDL, title: Group}
-        - {data_key: pseudo, id: JKSDUP, title: Name}
-        - {data_key: role, id: VJQQOR, title: Role}
+        - {data_key: group, expand: false, id: QGJEDL, title: Group, width: 152.5999755859375}
+        - {data_key: pseudo, expand: false, id: JKSDUP, title: Name, width: 138.39996337890625}
+        - {data_key: role, expand: false, id: VJQQOR, title: Role, width: 82.5999755859375}
         - {data_key: '', id: LLVCLG, title: ''}
       type: DataGrid
     layout_properties: {}
@@ -36,8 +36,8 @@ components_by_slot:
       properties:
         columns:
         - {data_key: title, id: JKSDUP, title: Title}
-        - {data_key: taken, id: VJQQOR, title: Taken}
-        - {data_key: time, id: OJLQEN, title: Time}
+        - {data_key: taken, id: VJQQOR, title: Complete}
+        - {data_key: time, id: OJLQEN, title: Best Time}
       type: DataGrid
     layout_properties: {}
     name: column_panel_2

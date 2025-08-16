@@ -15,7 +15,7 @@ class Board(BoardTemplate):
     self.user = anvil.users.get_user()
     if not self.user:
       anvil.users.login_with_form()
-      return
+      
     #print(f"user_group → {self.user['group']}")
     self.repeating_panel_users.add_event_handler('x-view-achievements', self.view_achievements)
 

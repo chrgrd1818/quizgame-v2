@@ -25,7 +25,7 @@ def get_quizzes_for_user(user_id):
     raise Exception("User not found")
 
   # 2. Fetch all quizzes and this user's quiz-attempt rows
-  all_quizzes = app_tables.quizzes.search()              # All definitions
+  all_quizzes = app_tables.quizzes.search(Enabled=True)              # All definitions
   taken_rows  = app_tables.user_quiz.search(User=user)   # Attempts by this user
 
   # 3. Group attempts by quiz_id
@@ -51,11 +51,11 @@ def get_quizzes_for_user(user_id):
       taken = False
       time  = None
       date  = None
-
+  
     result.append({
       'id'    : quiz.get_id(),       # optional, if you need it later
       'title' : quiz['Title'],
-      'taken' : taken,
+      'taken' : "Yes" if taken else "No",
       'time'  : time,
       'date'  : date
     })
