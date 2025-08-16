@@ -1,10 +1,15 @@
 components_by_slot:
   content_slot:
   - components:
-    - layout_properties: {expand: false, width: null}
+    - layout_properties: {grid_position: 'SXZGCQ,OMMXOF'}
       name: repeating_panel_quiz
       properties: {item_template: QuizCatalogue.ItemTemplate1, visible: true}
       type: RepeatingPanel
+    layout_properties: {full_width_row: true}
+    name: column_panel_1
+    properties: {}
+    type: ColumnPanel
+  - components: []
     layout_properties: {}
     name: flow_panel_1
     properties: {}
