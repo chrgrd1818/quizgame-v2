@@ -2,7 +2,7 @@
  This CSS implements the Material Design 3 look and feel for Anvil apps.
  **/
 div.anvil-role-btn_progress .btn{margin:0; padding:0;}
-div.anvil-role-btn_progress .btn i.fa{font-size:1.5em;}
+div.anvil-role-btn_progress .btn i.fa{font-size:1.5em;margin-right:1px}
 /* Stop panel-cols cutting off drop shadows */
 .anvil-panel-col {
   padding-bottom: 10px;
