@@ -93,16 +93,14 @@ def delete_quiz(quiz):
   quiz.delete()
 
 @anvil.server.callable
-def fetch_quiz_from_url(url):
+def fetch_quiz_from_url(filename):
   base_url = "https://raw.githubusercontent.com/chrgrd1818/questacademy/refs/heads/main/quizzes/"
-  full_url = base_url + url + ".json"
+  full_url = base_url + filename + ".json"
   try:
-
     response = requests.get(full_url)
     response.raise_for_status() 
     quiz_dict = response.json()  
     return quiz_dict
-    
   except requests.exceptions.HTTPError as http_err:
     print(f"HTTP error occurred: {http_err}")
   except requests.exceptions.ConnectionError:
