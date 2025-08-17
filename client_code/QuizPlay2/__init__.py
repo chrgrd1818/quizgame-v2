@@ -27,6 +27,7 @@ class QuizPlay2(QuizPlay2Template):
     self.NOTCORRECT = "Essaye encore!"
     self.GAGNE = "Felicitations! Quiz terminé en"
     self.IMG_DEFAULT = "_/theme/dummy_img.jpg"
+    self.IMG_FOLDER = "_/theme/Picts"
     
     # Setup timer (interval and full = seconds)
     self.timer_next.interval  = 0
@@ -84,10 +85,13 @@ class QuizPlay2(QuizPlay2Template):
     self.panel_doafter.visible = False
 
    
-    #img_path = "" + self.file + "_" + str(id+1) + ""
+    
     img_path = self.file + "__" + str(question['id'])
-    media = anvil.server.call('fetch_data_image', img_path)
+    media = self.IMG_FOLDER + "/" + self.file + "/" + img_path + ".jpg"
+    #media = anvil.server.call('fetch_data_image', img_path)
     self.image_question.source = media or self.IMG_DEFAULT
+    print(media)
+    
 
     ## butoons options
     self.options_panel.clear() 
