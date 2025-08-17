@@ -36,6 +36,7 @@ class QuizPlay2(QuizPlay2Template):
     self.quiz = quiz_data["quiz_selected"]
     # Organize questions
     self.levels = group_questions_by_level(quiz_data['questions'])
+    #print(self.levels)
     self.title = quiz_data['quiz_selected']['Title']
     self.file = quiz_data['quiz_selected']['File']
     if not self.levels:
