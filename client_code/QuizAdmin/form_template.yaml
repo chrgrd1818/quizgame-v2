@@ -1,8 +1,0 @@
-components_by_slot:
-  content_slot:
-  - layout_properties: {}
-    name: label_1
-    properties: {text: Hello}
-    type: Label
-is_package: true
-layout: {type: 'form:Base'}
