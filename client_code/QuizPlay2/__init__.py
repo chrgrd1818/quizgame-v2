@@ -24,14 +24,11 @@ class QuizPlay2(QuizPlay2Template):
     # Setup timer (interval and full = seconds)
     self.timer_next.interval  = 0
     self.timer_chrono.interval = 1
-     
-    #self.quiz = quiz_data["quiz_selected"]
-    # Organize questions
-   
-    
+
     self.title = self.quiz_data['Title']
     self.file = self.quiz_data['File']
-    #self.file = "france2025-v1"
+    self.quiz = self.quiz_data['Quiz']
+    self.hasPicts = self.quiz_data['Quiz']['HasPicts']
 
     self.levels = self.quiz_data['QuizDictionary']
     #print(self.levels)
@@ -42,19 +39,17 @@ class QuizPlay2(QuizPlay2Template):
     self.level_keys = list(self.levels.keys())
     self.level_keys.sort()
     self.current_level = self.level_keys[0]
-
-
-    
     self.current_level_idx = 0
     self.current_q_idx    = 0
+    
     self.start_time       = datetime.utcnow()
 
     self.progress_shapes = []
     self.lbl_title.text =  self.title
+    
     self.show_question()
 
   def timer_chrono_tick(self, **event_args):
-    
     delta_seconds = int((datetime.utcnow() - self.start_time).total_seconds())
     min_sec_format = h.seconds_to_min_sec(delta_seconds)
     self.lbl_chrono.text = f"{min_sec_format}s"
@@ -65,13 +60,12 @@ class QuizPlay2(QuizPlay2Template):
       return
 
     self.current_level = self.level_keys[self.current_level_idx]
-
     if self.current_q_idx == 0:
       self.update_progress_panel()
 
     questions = self.levels[self.current_level]
     current_q = questions[self.current_q_idx]
-    
+  
     self.update_UI(current_q, self.current_q_idx)
       
   def update_UI(self, question, id):
@@ -82,14 +76,15 @@ class QuizPlay2(QuizPlay2Template):
     self.panel_quiz.border="5px solid #FFFFFF"
    
     self.panel_doafter.visible = False
-
-    img_path = self.file + "__" + str(question['id'])
-    media = self.IMG_FOLDER + "/" + self.file + "/" + img_path + ".jpg"
-    #media = anvil.server.call('fetch_data_image', img_path)
+    if not self.hasPicts:
+       media = self.IMG_DEFAULT
+    else:
+      img_path = self.file + "__" + str(question['id'])
+      media = self.IMG_FOLDER + "/" + self.file + "/" + img_path + ".jpg"
+      #media = anvil.server.call('fetch_data_image', img_path)
     self.image_question.source = media or self.IMG_DEFAULT
-    print(media)
+    #print(media)
     
-
     ## butoons options
     self.options_panel.clear() 
     opts = question['options'].copy()
@@ -98,13 +93,12 @@ class QuizPlay2(QuizPlay2Template):
     for opt in opts:
       btn = Button(
         text    = opt['text'],
-        role    = "tonal-button",      # you can pick "primary", "info", etc.
-        width   = "full-width",         # full-width, or whatever you need
+        role    = "tonal-button",      
+        width   = "full-width",    
         align   = "center",
         background= "theme:Primary Container",
         font_size= 20
       )
-
       btn.correct = opt['correct']
       btn.set_event_handler('click', self.answer_click)
       self.options_panel.add_component(btn)

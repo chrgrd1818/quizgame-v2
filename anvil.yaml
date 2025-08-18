@@ -55,6 +55,9 @@ db_schema:
     - admin_ui: {order: 7, width: 200}
       name: QuizDictionary
       type: simpleObject
+    - admin_ui: {order: 8, width: 200}
+      name: HasPicts
+      type: bool
     server: full
     title: Quizzes
   user_game:

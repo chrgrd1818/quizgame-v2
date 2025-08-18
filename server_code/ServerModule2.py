@@ -100,5 +100,6 @@ def get_quiz(fileId=None):
     "QuizDictionary": grouped,   # grouped dict with string level keys
     "Date": row['Date'],
     "TotalQuestions": total,
-    "File": row['File']
+    "File": row['File'],
+    "Quiz": row
   }
