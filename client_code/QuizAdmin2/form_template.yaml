@@ -1,0 +1,11 @@
+components_by_slot:
+  content_slot:
+  - components: []
+    layout_properties: {full_width_row: true}
+    name: column_panel_1
+    properties: {}
+    type: ColumnPanel
+is_package: true
+layout:
+  form_event_bindings: {}
+  type: form:Base

@@ -13,9 +13,16 @@ class Base(BaseTemplate):
     self.init_components(**properties)
 
     self.user = anvil.users.get_user()
+    self.link_admin.visible = False
     if self.user:
       self.label_usercheck.text = self.user['pseudo']
-
+      role = self.user['role']
+      print(role)
+      if role == "admin": 
+        self.link_admin.visible = True       
+      else:
+        self.link_admin.visible = False
+        
     # Any code you write here will run before the form opens.
 
   def link_home_click(self, **event_args):
@@ -41,5 +48,5 @@ class Base(BaseTemplate):
     open_form('Home')
 
   def link_admin_click(self, **event_args):
-    open_form("QuizAdmin")
+    open_form("QuizAdmin2")
     
