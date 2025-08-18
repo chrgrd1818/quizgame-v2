@@ -33,6 +33,11 @@ components:
     name: link_account
     properties: {icon: 'fa:user', text: Account, visible: false}
     type: Link
+  - event_bindings: {click: link_admin_click}
+    layout_properties: {grid_position: 'FLDEIR,AIODLN'}
+    name: link_admin
+    properties: {icon: 'fa:edit', text: Admin, visible: false}
+    type: Link
   - event_bindings: {click: link_logout_click}
     layout_properties: {grid_position: 'EUHXJX,IFAMJR'}
     name: link_logout

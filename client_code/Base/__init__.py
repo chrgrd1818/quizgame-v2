@@ -39,4 +39,7 @@ class Base(BaseTemplate):
     anvil.js.window.sessionStorage.clear()  # Clear session storage
     anvil.js.window.location.reload()
     open_form('Home')
+
+  def link_admin_click(self, **event_args):
+    open_form("QuizAdmin")
     

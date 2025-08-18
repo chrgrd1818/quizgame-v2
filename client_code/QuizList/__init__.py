@@ -24,7 +24,7 @@ class QuizList(QuizListTemplate):
     #if the user clicks OK on the alert
     if alert(content=editing_form, large=True):
       #add the movie to the Data Table with the filled in information
-      anvil.server.call('add_quiz', item)
+      anvil.server.call('add_parse_quiz', item)
       #refresh the Data Grid
       self.repeating_panel_1.items = app_tables.quizzes.search()
 
