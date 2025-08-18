@@ -9,19 +9,11 @@ from datetime import datetime
 import random
 from ..TimeHelper import TimeHelper as h
 
-def group_questions_by_level(questions):
-  levels = {}
-  for q in questions:
-    lvl = q['difficultyLevel']
-    levels.setdefault(lvl, []).append(q)
-  for lvl in levels:
-    levels[lvl].sort(key=lambda q: q['id'])
-  return dict(sorted(levels.items()))
-  
 class QuizPlay2(QuizPlay2Template):
-  def __init__(self, quiz_data, **properties):
+  def __init__(self, quiz_load, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
+    self.quiz_data = quiz_load
 
     self.CORRECT = "Bravo!"
     self.NOTCORRECT = "Essaye encore!"
@@ -33,26 +25,32 @@ class QuizPlay2(QuizPlay2Template):
     self.timer_next.interval  = 0
     self.timer_chrono.interval = 1
      
-    self.quiz = quiz_data["quiz_selected"]
+    #self.quiz = quiz_data["quiz_selected"]
     # Organize questions
-    self.levels = group_questions_by_level(quiz_data['questions'])
-    print(self.levels)
-    self.title = quiz_data['quiz_selected']['Title']
-    self.file = quiz_data['quiz_selected']['File']
+   
+    
+    self.title = self.quiz_data['Title']
+    self.file = self.quiz_data['File']
+    #self.file = "france2025-v1"
+
+    self.levels = self.quiz_data['QuizDictionary']
+    #print(self.levels)
     if not self.levels:
       print("No questions found.")
       return
+    self.levels = {int(k): v for k, v in self.quiz_data['QuizDictionary'].items()}
+    self.level_keys = list(self.levels.keys())
+    self.level_keys.sort()
+    self.current_level = self.level_keys[0]
 
-    self.level_keys       = list(self.levels.keys())
-    self.current_level    = self.level_keys[0]
+
+    
     self.current_level_idx = 0
     self.current_q_idx    = 0
     self.start_time       = datetime.utcnow()
 
     self.progress_shapes = []
     self.lbl_title.text =  self.title
-
-    
     self.show_question()
 
   def timer_chrono_tick(self, **event_args):
@@ -85,8 +83,6 @@ class QuizPlay2(QuizPlay2Template):
    
     self.panel_doafter.visible = False
 
-   
-    
     img_path = self.file + "__" + str(question['id'])
     media = self.IMG_FOLDER + "/" + self.file + "/" + img_path + ".jpg"
     #media = anvil.server.call('fetch_data_image', img_path)

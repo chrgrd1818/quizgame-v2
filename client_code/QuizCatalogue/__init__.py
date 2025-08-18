@@ -21,13 +21,9 @@ class QuizCatalogue(QuizCatalogueTemplate):
     self.repeating_panel_quiz.add_event_handler('x-play-quiz', self.play_quiz)
 
   def play_quiz(self, quiz, **event_args):
-    if quiz:
-      url = quiz['File']
-      load = anvil.server.call('fetch_quiz_from_url', url)
-      if load:
-        load['quiz_selected']=quiz
-        open_form("QuizPlay2", quiz_data=load)
-      else:
-        print("Request failed.")
+    fileId = quiz['File']
+    getquiz = anvil.server.call('get_quiz', fileId)
+    if getquiz:
+        open_form("QuizPlay2", quiz_load=getquiz)
     else:
-      print("No quiz selected.")
+      print("No quiz.")
