@@ -28,7 +28,7 @@ def get_file_github(filename):
 def group_questions_by_level(questions):
   levels = {}
   for q in questions:
-    lvl = q['difficultyLevel']
+    lvl = str(q['difficultyLevel'])  # force string key
     levels.setdefault(lvl, []).append(q)
   for lvl in levels:
     levels[lvl].sort(key=lambda q: q['id'])
@@ -36,14 +36,14 @@ def group_questions_by_level(questions):
 
 def _fetch_and_group(file_stub):
   # Fetch from GitHub
-  
   quiz_data = get_file_github(file_stub)
+ 
+  #print(quiz_data['questions'])
   # Group at save time
-  print(quiz_data['questions'])
   grouped = group_questions_by_level(quiz_data['questions'])
   # Add metadata back in if needed
-  quiz_data['grouped_questions'] = grouped
-  return quiz_data
+  #quiz_data['grouped_questions'] = grouped
+  return grouped
 
 @anvil.server.callable
 def add_parse_quiz(quiz_data):
@@ -70,3 +70,34 @@ def add_parse_quiz(quiz_data):
       QuizDictionary=parsed_and_grouped
     )
   return {"ok": True, "title": title}
+
+
+@anvil.server.callable
+def update_quiz(quiz, quiz_data):
+  if quiz_data.get('Title') and quiz_data.get('File') :
+    quiz_data['Date'] = datetime.now(anvil.tz.tzlocal())
+    quiz.update(**quiz_data)
+
+@anvil.server.callable
+def delete_quiz(quiz):
+  quiz.delete()
+
+
+@anvil.server.callable
+def get_quiz(fileId=None):
+  # Try exact title match first (if provided)
+  row = app_tables.quizzes.get(File=fileId) if fileId else None
+
+  if not row:
+    return None
+    raise ValueError("Quiz not found.")
+
+  grouped = row['QuizDictionary'] or {}
+  total = sum(len(qs) for qs in grouped.values())
+
+  return {
+    "Title": row['Title'],
+    "QuizDictionary": grouped,   # grouped dict with string level keys
+    "Date": row['Date'],
+    "TotalQuestions": total
+  }

@@ -53,7 +53,7 @@ db_schema:
       name: nquests
       type: number
     - admin_ui: {order: 7, width: 200}
-      name: Dictionary
+      name: QuizDictionary
       type: simpleObject
     server: full
     title: Quizzes

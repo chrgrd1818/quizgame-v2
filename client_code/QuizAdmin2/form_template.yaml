@@ -11,6 +11,7 @@ components_by_slot:
         columns:
         - {data_key: Title, id: JKSDUP, title: Title}
         - {data_key: File, id: VJQQOR, title: File}
+        - {data_key: nquests, id: AYWSMO, title: N_quests}
         - {data_key: Date, id: OJLQEN, title: Date}
         - {data_key: '', id: ULSEKQ, title: '-'}
       type: DataGrid

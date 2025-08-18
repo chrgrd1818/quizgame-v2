@@ -31,7 +31,8 @@ class QuizAdmin2(QuizAdmin2Template):
     #if the user clicks OK on the alert
     if alert(content=editing_form, large=True):
       #add  to the Data Table with the filled in information
-      anvil.server.call('add_parse_quiz', item)
+      saving = anvil.server.call('add_parse_quiz', item)
+      print(saving)
       #refresh the Data Grid
       self.repeating_panel_1.items = app_tables.quizzes.search()
 
@@ -54,16 +55,10 @@ class QuizAdmin2(QuizAdmin2Template):
       self.repeating_panel_1.items = app_tables.quizzes.search()
 
   def print_quiz(self, quiz, **event_args):
-    if quiz:
-      url = quiz['File']
-      # Call your server fn
-      load = anvil.server.call('fetch_quiz_from_url', url)
-      if load:
-        # For example: print every question to console
-        for q in load['questions']:
-          print(f"Q{q['id']} (Lvl {q['difficultyLevel']}): {q['text']}")
-      else:
-        print("Request failed.")
+    fileId = quiz['File']
+    getquiz = anvil.server.call('get_quiz', fileId)
+    print(getquiz or "Request failed.")
+
 
   def home_link_click(self, **event_args):
     open_form("QuizHome")

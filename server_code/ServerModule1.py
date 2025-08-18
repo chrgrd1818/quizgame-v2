@@ -76,21 +76,6 @@ def get_quizzes_for_user(user_id):
 
 
 
-@anvil.server.callable
-def add_quiz(quiz_data):
-  if quiz_data.get('Title') and quiz_data.get('File') :
-    quiz_data['Date'] = datetime.now(anvil.tz.tzlocal())
-    app_tables.quizzes.add_row(**quiz_data)
-
-@anvil.server.callable
-def update_quiz(quiz, quiz_data):
-  if quiz_data.get('Title') and quiz_data.get('File') :
-    quiz_data['Date'] = datetime.now(anvil.tz.tzlocal())
-    quiz.update(**quiz_data)
-
-@anvil.server.callable
-def delete_quiz(quiz):
-  quiz.delete()
 
 @anvil.server.callable
 def fetch_quiz_from_url(filename):
