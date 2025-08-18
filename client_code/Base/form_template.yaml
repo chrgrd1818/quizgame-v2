@@ -89,5 +89,5 @@ is_package: true
 slots:
   content_slot:
     index: 0
-    set_layout_properties: {full_width_row: false, grid_position: 'PSJRBH,SYMWEU', row_background: 'theme:Secondary Container'}
+    set_layout_properties: {full_width_row: false, grid_position: 'PSJRBH,SYMWEU', row_background: ''}
     target: {name: column_panel_1, type: container}
