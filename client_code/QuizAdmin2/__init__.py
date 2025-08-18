@@ -24,19 +24,19 @@ class QuizAdmin2(QuizAdmin2Template):
     self.repeating_panel_1.add_event_handler('x-delete-quiz', self.delete_quiz)
     self.repeating_panel_1.add_event_handler('x-print-quiz', self.print_quiz)
 
-  def add_quiz_click(self, **event_args):
+  def add_quiz(self, **event_args):
     item = {}
     editing_form = QuizEdit(item=item)
 
     #if the user clicks OK on the alert
     if alert(content=editing_form, large=True):
-      #add the movie to the Data Table with the filled in information
+      #add  to the Data Table with the filled in information
       anvil.server.call('add_parse_quiz', item)
       #refresh the Data Grid
       self.repeating_panel_1.items = app_tables.quizzes.search()
 
   def edit_quiz(self, quiz, **event_args):
-    #movie is the row from the Data Table
+    #item is the row from the Data Table
     item = dict(quiz)
     editing_form = QuizEdit(item=item)
 
@@ -67,3 +67,6 @@ class QuizAdmin2(QuizAdmin2Template):
 
   def home_link_click(self, **event_args):
     open_form("QuizHome")
+
+  def button_add_click(self, **event_args):
+    self.add_quiz(**event_args)

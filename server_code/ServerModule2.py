@@ -4,8 +4,26 @@ import json
 from anvil.tables import app_tables
 from datetime import datetime
 import anvil.tz
+import requests
 
 BASE_URL = "https://raw.githubusercontent.com/chrgrd1818/questacademy/refs/heads/main/quizzes/"
+
+def get_file_github(filename):
+  full_url = BASE_URL + "" + filename + ".json"
+  try:
+    response = requests.get(full_url)
+    response.raise_for_status() 
+    quiz_dict = response.json()  
+    return quiz_dict
+  except requests.exceptions.HTTPError as http_err:
+    print(f"HTTP error occurred: {http_err}")
+  except requests.exceptions.ConnectionError:
+    print("Connection error — check your internet or the URL.")
+  except requests.exceptions.Timeout:
+    print("Request timed out — server might be slow or unreachable.")
+  except requests.exceptions.RequestException as err:
+    print(f"An error occurred: {err}")
+
 
 def group_questions_by_level(questions):
   levels = {}
@@ -18,10 +36,10 @@ def group_questions_by_level(questions):
 
 def _fetch_and_group(file_stub):
   # Fetch from GitHub
-  url = f"{BASE_URL}{file_stub}.json"
-  raw_text = anvil.http.request(url, method="GET", json=False, timeout=30)
-  quiz_data = json.loads(raw_text)
+  
+  quiz_data = get_file_github(file_stub)
   # Group at save time
+  print(quiz_data['questions'])
   grouped = group_questions_by_level(quiz_data['questions'])
   # Add metadata back in if needed
   quiz_data['grouped_questions'] = grouped

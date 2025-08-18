@@ -1,0 +1,23 @@
+components:
+- components:
+  - event_bindings: {click: button_edit_click}
+    layout_properties: {}
+    name: button_edit
+    properties: {icon: 'fa:edit', text: ''}
+    type: Button
+  - event_bindings: {click: button_delete_click}
+    layout_properties: {}
+    name: button_delete
+    properties: {icon: 'fa:trash', text: ''}
+    type: Button
+  - event_bindings: {click: button_print_click}
+    layout_properties: {}
+    name: button_print
+    properties: {icon: 'fa:print', text: ''}
+    type: Button
+  layout_properties: {column: ULSEKQ}
+  name: flow_panel_1
+  properties: {gap: none}
+  type: FlowPanel
+container: {type: DataRowPanel}
+is_package: true
