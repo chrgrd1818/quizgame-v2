@@ -14,5 +14,8 @@ class Home(HomeTemplate):
     
     self.init_components(**properties)
     self.user = get_current_user()
+    if not self.user:
+      anvil.users.login_with_form()
+      self.user = get_current_user()
 
     go_to("QuizCatalogue")

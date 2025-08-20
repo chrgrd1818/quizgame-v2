@@ -15,14 +15,15 @@ class Base(BaseTemplate):
 
     # Get and cache the user
     self.user = get_current_user()
-    self.pseudo = self.user['pseudo']
-    self.role = self.user['role']
-    isAdmin = ( self.role == 'admin')
-    print(self.role + " : " + self.pseudo)
+    if self.user:
+      self.pseudo = self.user['pseudo']
+      self.role = self.user['role']
+      isAdmin = ( self.role == 'admin')
+      print(self.role + " : " + self.pseudo)
      
-    self.link_admin.visible = True if isAdmin else False
-    self.label_usercheck.text = self.pseudo
-    print(self.user['role'])
+      self.link_admin.visible = True if isAdmin else False
+      self.label_usercheck.text = self.pseudo
+      print(self.user['role'])
 
   def require_role_for_page(self, page_name):
     # This can be called from any child to enforce role-based access
