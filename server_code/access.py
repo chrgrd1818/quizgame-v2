@@ -5,7 +5,7 @@ from anvil.tables import app_tables
 import anvil.server
 
 # Define the role hierarchy (lowest to highest)
-ROLE_HIERARCHY = ["user", "leader", "editor", "admin"]
+ROLE_HIERARCHY = ["player", "leader", "editor", "admin"]
 
 def has_required_role(user_role, required_role):
   #Return True if user's role is at least the required role.
@@ -17,9 +17,17 @@ def has_required_role(user_role, required_role):
 def get_required_role_for_page(page_name):
   row = app_tables.page_roles.get(page=page_name)
   if row:
-    return row['required_role']
+    return row['role']
   return "user"  # default minimum
 
+@anvil.server.callable
+def user_has_role(role):
+  user = anvil.users.get_user()
+  if not user:
+    return False
+  user_role = user['role']
+  return True if role == user_role else False
+  
 @anvil.server.callable
 def user_has_role_for_page(page_name):
   user = anvil.users.get_user()
@@ -29,6 +37,4 @@ def user_has_role_for_page(page_name):
   user_role = user['role']
   return has_required_role(user_role, required_role)
 
-@anvil.server.callable
-def get_current_user():
-  return anvil.users.get_user()
+

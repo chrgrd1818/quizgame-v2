@@ -8,11 +8,14 @@ from anvil.tables import app_tables
 from datetime import datetime
 import random
 from ..TimeHelper import TimeHelper as h
+from ..router import go_to, get_current_user
 
 class QuizPlay2(QuizPlay2Template):
   def __init__(self, quiz_load, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
+
+    get_current_user()
     self.quiz_data = quiz_load
 
     self.CORRECT = "Bravo!"
@@ -185,11 +188,7 @@ class QuizPlay2(QuizPlay2Template):
     self.image_question.visible = False
     self.panel_doafter.visible = True
     
-    if anvil.users.get_user():
-      self.save_quiz(elapsed)
-    else:
-      anvil.users.login_with_form()
-      self.save_quiz(elapsed)
+    self.save_quiz(elapsed)
       
   def save_quiz(self, elapsed):
     quiz = self.quiz

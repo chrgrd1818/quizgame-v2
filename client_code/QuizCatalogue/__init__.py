@@ -5,17 +5,15 @@ import anvil.users
 import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
+from ..router import go_to, get_current_user
 
 
 class QuizCatalogue(QuizCatalogueTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
-    
-    self.user = anvil.users.get_user()
-    if not self.user:
-      anvil.users.login_with_form()
-      
+    self.user = get_current_user()
+  
 
     self.repeating_panel_quiz.items = app_tables.quizzes.search(tables.order_by("order", ascending=True), Enabled=True)
     self.repeating_panel_quiz.add_event_handler('x-play-quiz', self.play_quiz)
