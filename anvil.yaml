@@ -28,6 +28,17 @@ db_schema:
       type: string
     server: full
     title: Images
+  page_roles:
+    client: none
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: page
+      type: string
+    - admin_ui: {order: 1, width: 200}
+      name: role
+      type: string
+    server: full
+    title: page_roles
   quizzes:
     client: search
     columns:
