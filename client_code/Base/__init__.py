@@ -12,17 +12,18 @@ class Base(BaseTemplate):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
 
-    self.user = anvil.users.get_user()
-    self.link_admin.visible = False
-    if self.user:
-      self.label_usercheck.text = self.user['pseudo']
-      role = self.user['role']
-      print(role)
-      if role == "admin": 
-        self.link_admin.visible = True       
-      else:
-        self.link_admin.visible = False
-        
+    # Get and cache the user
+    self.user = anvil.server.call('get_current_user')
+    if not self.user:
+      self.user = anvil.users.login_with_form()
+
+    # Example: check for "admin" role before opening admin form
+    isAdmin = anvil.server.call('user_has_role', 'admin')
+     
+    self.link_admin.visible = True if isAdmin else False
+    self.label_usercheck.text = self.user['pseudo']
+    print(self.user['role'])
+
     # Any code you write here will run before the form opens.
 
   def link_home_click(self, **event_args):
