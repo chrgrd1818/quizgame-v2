@@ -142,7 +142,7 @@ class QuizPlay2(QuizPlay2Template):
     else:
       self.feedback_ko()
 
-    self.timer_next.interval  = 1
+    self.timer_next.interval  = 0.5
     btn.enabled= True
 
   def timer_next_tick(self, **event_args):
