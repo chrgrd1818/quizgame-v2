@@ -6,7 +6,7 @@ import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 from ..router import go_to, get_current_user
-
+from ..Base import Base
 
 class QuizCatalogue(QuizCatalogueTemplate):
   def __init__(self, **properties):

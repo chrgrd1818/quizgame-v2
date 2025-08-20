@@ -24,6 +24,19 @@ class Base(BaseTemplate):
     self.label_usercheck.text = self.pseudo
     print(self.user['role'])
 
+  def require_role_for_page(self, page_name):
+    # This can be called from any child to enforce role-based access
+    if not self.user:
+      alert("You must be logged in to access this page.")
+      go_to("LoginForm")
+      return False
+    if not anvil.server.call('user_has_role_for_page', page_name):
+      required_role = anvil.server.call('get_required_role_for_page', page_name)
+      alert(f"Access denied: You need '{required_role}' privileges to open this page.")
+      go_to("DefaultForm")
+      return False
+    return True
+
   def link_home_click(self, **event_args):
     go_to("Home")
   def link_account_click(self, **event_args):
