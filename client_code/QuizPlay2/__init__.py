@@ -31,9 +31,7 @@ class QuizPlay2(QuizPlay2Template):
     self.file = self.quiz_data['File']
     self.quiz = self.quiz_data['Quiz']
     self.hasPicts = self.quiz_data['Quiz']['HasPicts']
-
     self.levels = self.quiz_data['QuizDictionary']
-    
     if not self.levels:
       print("No questions found.")
       return
@@ -41,19 +39,15 @@ class QuizPlay2(QuizPlay2Template):
     self.level_keys = list(self.levels.keys())
     self.level_keys.sort()
     self.current_level = self.level_keys[0]
-    
     self.progress_shapes = []
     self.lbl_title.text =  self.title
- 
+    self.panel_play.visible = False
+    self.panel_doafter.visible = False
 
     ##START GAME
-  def form_show(self, **event_args):
-    if alert("Pret?"):
-      self.start_game()
-    else:
-      print("not ready")
+  def button_start_click(self, **event_args):
+    self.start_game()
       
-
   def start_game(self):
     self.timer_chrono.interval = 1
     self.timer_chrono.enabled = True
@@ -83,6 +77,7 @@ class QuizPlay2(QuizPlay2Template):
     self.update_UI(current_q, self.current_q_idx)
       
   def update_UI(self, question, id):
+    self.panel_play.visible = True
     self.lbl_level.text    = f"Niveau {self.current_level} / {len(self.level_keys)}"
     self.lbl_question.text = question['text']
     self.lbl_feedback.text = ""
@@ -203,12 +198,13 @@ class QuizPlay2(QuizPlay2Template):
     self.image_question.visible = False
     self.panel_doafter.visible = True
     
-    self.save_quiz(elapsed)
+    self.save_quiz(sum_effective_times)
       
   def save_quiz(self, elapsed):
     quiz = self.quiz
     time = elapsed
-    anvil.server.call("set_score_quiz", quiz, time)
+    saving = anvil.server.call("set_score_quiz", quiz, time)
+    print(saving)
 
   def link_quiz_click(self, **event_args):
     open_form("QuizHome")
@@ -218,4 +214,6 @@ class QuizPlay2(QuizPlay2Template):
 
   def button_scorepage_click(self, **event_args):
     open_form("Board")
+
+
 

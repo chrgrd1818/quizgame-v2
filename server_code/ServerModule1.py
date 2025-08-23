@@ -94,13 +94,49 @@ def fetch_quiz_from_url(filename):
     print("Request timed out — server might be slow or unreachable.")
   except requests.exceptions.RequestException as err:
     print(f"An error occurred: {err}")
+
+def get_fastest_for_quiz(user, quiz):
+  return app_tables.user_quiz.search(
+    Quiz=quiz,
+    User=user,
+    order_by=anvil.tables.order_by("Time")
+  ).get()
   
 @anvil.server.callable
 def set_score_quiz(quiz, time):
   user = anvil.users.get_user()
   if not user:
     raise Exception("No User or Login required")
-  app_tables.user_quiz.add_row(User=user, Quiz=quiz, Score=quiz['nquests'], Time=time, DateTime=datetime.utcnow())
+    
+  now       = datetime.utcnow()
+  new_score = quiz['nquests']
+  fastest   = get_fastest_for_quiz(user, quiz)
+
+  if fastest is None:
+    app_tables.user_quiz.add_row(
+      User     = user,
+      Quiz     = quiz,
+      Score    = new_score,
+      Time     = time,
+      DateTime = now
+    )
+    return {"status": "inserted", "best_time": time}
+
+    # Subsequent attempt: insert only if faster
+  if time < fastest['Time']:
+    app_tables.user_quiz.add_row(
+      User     = user,
+      Quiz     = quiz,
+      Score    = new_score,
+      Time     = time,
+      DateTime = now
+    )
+    return {
+      "status": "new_best",
+      "old_best": fastest['Time'],
+      "best_time": time
+    }
+
 
 @anvil.server.callable
 def get_score_quiz(quiz):
