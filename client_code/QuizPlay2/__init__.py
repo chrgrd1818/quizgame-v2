@@ -12,7 +12,6 @@ from ..router import go_to, get_current_user
 
 class QuizPlay2(QuizPlay2Template):
   def __init__(self, quiz_load, **properties):
-    # Set Form properties and Data Bindings.
     self.init_components(**properties)
 
     get_current_user()
@@ -24,9 +23,9 @@ class QuizPlay2(QuizPlay2Template):
     self.IMG_DEFAULT = "_/theme/dummy_img.jpg"
     self.IMG_FOLDER = "_/theme/Picts"
     
-    # Setup timer (interval and full = seconds)
     self.timer_next.interval  = 0
-    self.timer_chrono.interval = 1
+    self.timer_chrono.interval = 0
+    self.question_start_time = ""
 
     self.title = self.quiz_data['Title']
     self.file = self.quiz_data['File']
@@ -34,7 +33,7 @@ class QuizPlay2(QuizPlay2Template):
     self.hasPicts = self.quiz_data['Quiz']['HasPicts']
 
     self.levels = self.quiz_data['QuizDictionary']
-    #print(self.levels)
+    
     if not self.levels:
       print("No questions found.")
       return
@@ -42,18 +41,30 @@ class QuizPlay2(QuizPlay2Template):
     self.level_keys = list(self.levels.keys())
     self.level_keys.sort()
     self.current_level = self.level_keys[0]
-    self.current_level_idx = 0
-    self.current_q_idx    = 0
     
-    self.start_time       = datetime.utcnow()
-
     self.progress_shapes = []
     self.lbl_title.text =  self.title
-    
+ 
+
+    ##START GAME
+  def form_show(self, **event_args):
+    if alert("Pret?"):
+      self.start_game()
+    else:
+      print("not ready")
+      
+
+  def start_game(self):
+    self.timer_chrono.interval = 1
+    self.timer_chrono.enabled = True
+    self.start_time = datetime.utcnow()
+    self.current_level_idx = 0
+    self.current_q_idx    = 0
+    self.effective_times = []  # Store effective time per question
     self.show_question()
 
   def timer_chrono_tick(self, **event_args):
-    delta_seconds = int((datetime.utcnow() - self.start_time).total_seconds())
+    delta_seconds = int((datetime.utcnow() - self.question_start_time).total_seconds())
     min_sec_format = h.seconds_to_min_sec(delta_seconds)
     self.lbl_chrono.text = f"{min_sec_format}s"
 
@@ -61,7 +72,7 @@ class QuizPlay2(QuizPlay2Template):
     if self.current_level_idx >= len(self.level_keys):
       self.complete_quiz()
       return
-
+    self.question_start_time = datetime.utcnow()
     self.current_level = self.level_keys[self.current_level_idx]
     if self.current_q_idx == 0:
       self.update_progress_panel()
@@ -144,6 +155,9 @@ class QuizPlay2(QuizPlay2Template):
 
     self.timer_next.interval  = 0.5
     btn.enabled= True
+    elapsed = (datetime.now() - self.question_start_time).total_seconds()
+    self.effective_times.append(elapsed)
+
 
   def timer_next_tick(self, **event_args):
     self.timer_next.interval  = 0
@@ -174,8 +188,9 @@ class QuizPlay2(QuizPlay2Template):
 
   def complete_quiz(self):
     self.timer_chrono.interval  = 0
-    elapsed = (datetime.utcnow() - self.start_time).seconds
-    min_sec_format = h.seconds_to_min_sec(elapsed)
+    #elapsed = (datetime.utcnow() - self.start_time).seconds
+    sum_effective_times = sum(self.effective_times)
+    min_sec_format = h.seconds_to_min_sec(sum_effective_times)
     self.lbl_question.text   = f" {self.GAGNE} {min_sec_format}s"
     self.lbl_question.font_size   = 36
     self.lbl_feedback.text   = ""
