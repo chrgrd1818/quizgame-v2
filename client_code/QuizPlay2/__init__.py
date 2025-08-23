@@ -43,6 +43,7 @@ class QuizPlay2(QuizPlay2Template):
     self.lbl_title.text =  self.title
     self.panel_play.visible = False
     self.panel_doafter.visible = False
+    self.panel_alert.visible = True
 
     ##START GAME
   def button_start_click(self, **event_args):
