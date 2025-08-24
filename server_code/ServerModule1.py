@@ -96,12 +96,13 @@ def fetch_quiz_from_url(filename):
     print(f"An error occurred: {err}")
 
 def get_fastest_for_quiz(user, quiz):
-  best =  app_tables.user_quiz.search(
-    tables.order_by("Time", ascending=False),
-    Quiz=quiz,
-    User=user
-  )
-  return best[:1]
+  row =  app_tables.user_quiz.search(
+    tables.order_by("Time", ascending=True),
+    tables.limit(1),
+    User=user,
+    Quiz=quiz
+  ).first()
+  return row['Time'] if row else None
   
 @anvil.server.callable
 def set_score_quiz(quiz, time):
