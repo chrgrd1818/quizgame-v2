@@ -14,7 +14,7 @@ class QuizPlay2(QuizPlay2Template):
   def __init__(self, quiz_load, **properties):
     self.init_components(**properties)
 
-    get_current_user()
+    self.user = get_current_user()
     self.quiz_data = quiz_load
 
     self.CORRECT = "Bravo!"
@@ -198,13 +198,18 @@ class QuizPlay2(QuizPlay2Template):
     self.panel_quiz.border="5px solid #FFFFFF"
     self.image_question.visible = False
     self.panel_doafter.visible = True
+    self.panel_alert.visible = False
     
     self.save_quiz(sum_effective_times)
       
   def save_quiz(self, elapsed):
-    quiz = self.quiz
-    time = elapsed
-    saving = anvil.server.call("set_score_quiz", quiz, time)
+    data = {
+      's_quiz' : self.quiz,
+      's_time' : int(round(elapsed)),
+      's_user' : self.user,
+      's-score' : len(self.level_keys)
+    }
+    saving = anvil.server.call("set_score_quiz", data)
     print(saving)
 
   def link_quiz_click(self, **event_args):

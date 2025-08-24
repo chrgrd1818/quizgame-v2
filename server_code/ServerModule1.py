@@ -95,49 +95,39 @@ def fetch_quiz_from_url(filename):
   except requests.exceptions.RequestException as err:
     print(f"An error occurred: {err}")
 
-def get_fastest_for_quiz(user, quiz):
+def get_fastest_user_quiz(user, quiz):
   row =  app_tables.user_quiz.search(
     tables.order_by("Time", ascending=True),
-    tables.limit(1),
     User=user,
     Quiz=quiz
-  ).first()
+  )[0]
   return row['Time'] if row else None
   
 @anvil.server.callable
-def set_score_quiz(quiz, time):
-  user = anvil.users.get_user()
-  if not user:
-    raise Exception("No User or Login required")
-    
-  now       = datetime.utcnow()
-  new_score = quiz['nquests']
-  fastest   = get_fastest_for_quiz(user, quiz)
-
-  if fastest is None:
+def set_score_quiz(data):
+  # extract data
+  user  = data['s_user']
+  score = data['s-score']
+  quiz  = data['s_quiz']
+  time  = data['s_time']    
+  now   = datetime.utcnow()
+  
+  fastest   = get_fastest_user_quiz(user, quiz)
+  print(f" times: {fastest} vs current {time} ")
+  # insert only if faster
+  if fastest and time < fastest:
     app_tables.user_quiz.add_row(
       User     = user,
       Quiz     = quiz,
-      Score    = new_score,
-      Time     = time,
-      DateTime = now
-    )
-    return {"status": "inserted", "best_time": time}
-
-    # Subsequent attempt: insert only if faster
-  if time < fastest['Time']:
-    app_tables.user_quiz.add_row(
-      User     = user,
-      Quiz     = quiz,
-      Score    = new_score,
+      Score    = score,
       Time     = time,
       DateTime = now
     )
     return {
-      "status": "new_best",
-      "old_best": fastest['Time'],
-      "best_time": time
+      "status": "new_record"
     }
+  else: 
+    pass
 
 
 @anvil.server.callable
