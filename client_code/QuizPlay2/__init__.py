@@ -59,7 +59,12 @@ class QuizPlay2(QuizPlay2Template):
     self.show_question()
 
   def timer_chrono_tick(self, **event_args):
-    delta_seconds = int((datetime.utcnow() - self.question_start_time).total_seconds())
+    # Sum of all completed questions
+    completed_time = sum(self.effective_times)
+    # Time spent on current question (since question_start_time)
+    current_time = (datetime.utcnow() - self.question_start_time).total_seconds()
+    # Total live elapsed time
+    delta_seconds = int(round(completed_time + current_time))
     min_sec_format = h.seconds_to_min_sec(delta_seconds)
     self.lbl_chrono.text = f"{min_sec_format}s"
 
@@ -151,8 +156,9 @@ class QuizPlay2(QuizPlay2Template):
 
     self.timer_next.interval  = 0.5
     btn.enabled= True
-    elapsed = (datetime.now() - self.question_start_time).total_seconds()
+    elapsed = (datetime.utcnow() - self.question_start_time).total_seconds()
     self.effective_times.append(elapsed)
+    print(self.effective_times)
 
 
   def timer_next_tick(self, **event_args):
@@ -185,7 +191,7 @@ class QuizPlay2(QuizPlay2Template):
   def complete_quiz(self):
     self.timer_chrono.interval  = 0
     #elapsed = (datetime.utcnow() - self.start_time).seconds
-    sum_effective_times = sum(self.effective_times)
+    sum_effective_times = int(round(sum(self.effective_times)))
     min_sec_format = h.seconds_to_min_sec(sum_effective_times)
     self.lbl_question.text   = f" {self.GAGNE} {min_sec_format}s"
     self.lbl_question.font_size   = 36
