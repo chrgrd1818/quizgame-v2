@@ -18,10 +18,10 @@ class QuizPlay2(QuizPlay2Template):
     self.user = get_current_user()
     self.quiz_data = quiz_load
 
-    self.CORRECT = "Bravo!"
-    self.NOTCORRECT = "Essaye encore!"
+    self.CORRECT = "OUI, Bravo !"
+    self.NOTCORRECT = "NON, Essaye encore !"
     self.GAGNE = "Felicitations! Quiz terminé en"
-    self.NEW_RECORD = "Nouveau record personel!"
+    self.NEW_RECORD = "Nouveau record personel !"
     self.IMG_DEFAULT = "_/theme/dummy_img.jpg"
     self.IMG_FOLDER = "_/theme/Picts"
     
@@ -90,7 +90,7 @@ class QuizPlay2(QuizPlay2Template):
     self.lbl_question.text = question['text']
     self.lbl_feedback.text = ""
     self.lbl_question.font_size = 24
-    self.panel_quiz.border="5px solid #FFFFFF"
+    self.panel_quiz.border="10px solid #FFFFFF"
    
     self.panel_doafter.visible = False
     if not self.hasPicts:
@@ -156,7 +156,7 @@ class QuizPlay2(QuizPlay2Template):
     else:
       self.feedback_ko()
 
-    self.timer_next.interval  = 0.1
+    self.timer_next.interval  = 0.2
     btn.enabled= True
  
 
@@ -167,7 +167,7 @@ class QuizPlay2(QuizPlay2Template):
   def feedback_ok(self):
     self.lbl_feedback.text = self.CORRECT
     self.lbl_feedback.foreground= "Green"
-    self.panel_quiz.border="5px Solid Green"
+    self.panel_quiz.border="10px Solid Green"
     self.progress_shapes[self.current_q_idx].foreground = "green"
     self.progress_shapes[self.current_q_idx].icon = "fa:check-circle"
 
@@ -180,7 +180,7 @@ class QuizPlay2(QuizPlay2Template):
   def feedback_ko(self):
     self.lbl_feedback.text = self.NOTCORRECT
     self.lbl_feedback.foreground= "Red"
-    self.panel_quiz.border="5px Solid Red"
+    self.panel_quiz.border="10px Solid Red"
     for btn in self.progress_shapes:
       btn.icon = "fa:check-circle"
       btn.foreground = "#777"
@@ -216,7 +216,7 @@ class QuizPlay2(QuizPlay2Template):
       's-score' : len(self.level_keys)
     }
     saving = anvil.server.call("set_score_quiz", data)
-    print(saving)
+   
     if saving and saving['status'] == "new_record":
       self.lbl_question.text += "\n" + self.NEW_RECORD
 

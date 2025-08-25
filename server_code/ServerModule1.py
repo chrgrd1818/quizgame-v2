@@ -113,7 +113,7 @@ def set_score_quiz(data):
   now   = datetime.utcnow()
   
   fastest   = get_fastest_user_quiz(user, quiz)
-  print(f" times: {fastest} vs current {time} ")
+  
   # insert only if faster
   if fastest and time < fastest:
     app_tables.user_quiz.add_row(
