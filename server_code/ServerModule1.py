@@ -96,12 +96,14 @@ def fetch_quiz_from_url(filename):
     print(f"An error occurred: {err}")
 
 def get_fastest_user_quiz(user, quiz):
-  row =  app_tables.user_quiz.search(
+  results =  app_tables.user_quiz.search(
     tables.order_by("Time", ascending=True),
     User=user,
     Quiz=quiz
-  )[0]
-  return row['Time'] if row else None
+  )
+  if results:
+    return results[0]['Time']
+  return None
   
 @anvil.server.callable
 def set_score_quiz(data):
@@ -127,6 +129,16 @@ def set_score_quiz(data):
       "status": "new_record"
     }
   else: 
+    app_tables.user_quiz.add_row(
+      User     = user,
+      Quiz     = quiz,
+      Score    = score,
+      Time     = time,
+      DateTime = now
+    )
+    return {
+      "status": "added"
+    }
     pass
 
 

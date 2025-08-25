@@ -181,7 +181,7 @@ class QuizPlay2(QuizPlay2Template):
       self.feedback_ok()
     else:
       self.feedback_ko()
-    self.timer_next.interval = 0.2
+    self.timer_next.interval = 0.3
     btn.enabled = True
 
   def feedback_ok(self):
