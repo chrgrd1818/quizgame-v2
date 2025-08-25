@@ -6,47 +6,56 @@ import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 import anvil.js
+from ..router import go_to, get_current_user
 
 class Base(BaseTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
 
-    self.user = anvil.users.get_user()
-    self.link_admin.visible = False
+    # Get and cache the user
+    self.user = get_current_user()
     if self.user:
-      self.label_usercheck.text = self.user['pseudo']
-      role = self.user['role']
-      print(role)
-      if role == "admin": 
-        self.link_admin.visible = True       
-      else:
-        self.link_admin.visible = False
-        
-    # Any code you write here will run before the form opens.
+      self.pseudo = self.user['pseudo']
+      self.role = self.user['role']
+      isAdmin = ( self.role == 'admin')
+      print(self.role + " : " + self.pseudo)
+     
+      self.link_admin.visible = True if isAdmin else False
+      self.label_usercheck.text = self.pseudo
+     
+
+  def require_role_for_page(self, page_name):
+    # This can be called from any child to enforce role-based access
+    if not self.user:
+      alert("You must be logged in to access this page.")
+      go_to("LoginForm")
+      return False
+    if not anvil.server.call('user_has_role_for_page', page_name):
+      required_role = anvil.server.call('get_required_role_for_page', page_name)
+      alert(f"Access denied: You need '{required_role}' privileges to open this page.")
+      go_to("DefaultForm")
+      return False
+    return True
 
   def link_home_click(self, **event_args):
-    open_form("Home")
-
+    go_to("Home")
   def link_account_click(self, **event_args):
-    open_form("Account2")
-
+    go_to("Account2")
   def link_board_click(self, **event_args):
-    open_form("Board")
-
+    go_to("Board")
   def link_game_2_click(self, **event_args):
-    open_form("GameForm")
-
+    go_to("GameForm")
   def link_quizzes_2_click(self, **event_args):
-    open_form("QuizCatalogue")
-
+    go_to("QuizCatalogue")
+  def link_admin_click(self, **event_args):
+    go_to("QuizAdmin2")
   def link_logout_click(self, **event_args):
     anvil.users.logout()
     anvil.js.window.localStorage.clear()  # Clear local storage if used
     anvil.js.window.sessionStorage.clear()  # Clear session storage
     anvil.js.window.location.reload()
-    open_form('Home')
+    go_to('Home')
 
-  def link_admin_click(self, **event_args):
-    open_form("QuizAdmin2")
+
     

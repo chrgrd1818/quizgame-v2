@@ -5,6 +5,7 @@ import anvil.users
 import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
+from ..router import go_to, get_current_user
 
 
 class Account2(Account2Template):
@@ -12,9 +13,7 @@ class Account2(Account2Template):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
 
-    self.user = anvil.users.get_user()
-    if not self.user:
-      anvil.users.login_with_form()
+    self.user = get_current_user()
       
     
     print(f"user_id → {self.user.get_id()}")

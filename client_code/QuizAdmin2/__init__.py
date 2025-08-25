@@ -6,17 +6,14 @@ import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 from ..QuizEdit import QuizEdit
+from ..router import go_to, get_current_user
 
 
 class QuizAdmin2(QuizAdmin2Template):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
-
-    self.user = anvil.users.get_user()
-    if not self.user:
-      anvil.users.login_with_form()
-
+    self.user = get_current_user()
 
     self.repeating_panel_1.items = app_tables.quizzes.search()
     #add this line to set the event handler

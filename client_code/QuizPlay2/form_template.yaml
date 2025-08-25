@@ -20,7 +20,7 @@ components_by_slot:
         name: lbl_chrono
         properties: {align: right, bold: true, font_size: 18, foreground: 'theme:Primary', text: '', visible: true}
         type: Label
-      layout_properties: {full_width_row: true, grid_position: 'MAYABL,JQRYMX'}
+      layout_properties: {grid_position: 'ICHFKH,CVIPNK'}
       name: flow_panel_1
       properties: {align: center, border: '', foreground: 'theme:Primary', gap: medium}
       type: FlowPanel
@@ -34,39 +34,59 @@ components_by_slot:
         name: lbl_level
         properties: {align: right, bold: true, font: '', font_size: 18}
         type: Label
-      layout_properties: {grid_position: 'GCWNCB,SANLTY'}
+      layout_properties: {grid_position: 'NOSXXA,OLQYMM'}
       name: flow_panel_2
       properties: {}
       type: FlowPanel
-    - layout_properties: {grid_position: 'IIHDDA,JLPAPK'}
-      name: image_question
-      properties: {background: 'theme:Disabled Container', display_mode: shrink_to_fit, height: '200', source: '', visible: true}
-      type: Image
-    - layout_properties: {grid_position: 'ECCSWK,UCBCYA'}
-      name: lbl_question
-      properties: {align: center, bold: true, font_size: 24}
-      type: Label
-    - layout_properties: {grid_position: 'VLMDNX,YZBIAB'}
-      name: options_panel
-      properties: {align: center}
-      type: FlowPanel
-    - layout_properties: {grid_position: 'QVLIYK,QDIORS'}
-      name: lbl_feedback
-      properties: {align: center, font_size: 32}
-      type: Label
     - components:
+      - layout_properties: {grid_position: 'VWYKIH,LHMHZX'}
+        name: image_question
+        properties: {background: 'theme:Disabled Container', display_mode: shrink_to_fit, height: '200', source: '', visible: true}
+        type: Image
+      - layout_properties: {grid_position: 'PIXBPE,BRZECG'}
+        name: lbl_question
+        properties: {align: center, bold: true, font_size: 24}
+        type: Label
+      - layout_properties: {grid_position: 'FQCIVA,SNFSXL'}
+        name: lbl_feedback
+        properties: {align: center, font_size: 12}
+        type: Label
+      - components: []
+        layout_properties: {grid_position: 'VUCBOL,OXLMSA'}
+        name: options_panel
+        properties: {align: center}
+        type: FlowPanel
+      layout_properties: {grid_position: 'PZYQZI,YNCIRM'}
+      name: panel_play
+      properties: {visible: true}
+      type: ColumnPanel
+    - components:
+      - layout_properties: {grid_position: 'BMNIRQ,NPTAJV'}
+        name: label_result
+        properties: {align: center, bold: false, font_size: 36, spacing_above: large, spacing_below: large}
+        type: Label
       - event_bindings: {click: button_refaire_click}
         layout_properties: {grid_position: 'VZZQMC,OPQMVK'}
         name: button_refaire
-        properties: {align: center, role: outlined-button, text: REFAIRE}
+        properties: {align: center, role: filled-button, text: REFAIRE}
         type: Button
       - event_bindings: {click: button_scorepage_click}
         layout_properties: {grid_position: 'YUUZEK,FJJHAK'}
         name: button_scorepage
-        properties: {role: outlined-button, text: VOIR SCORES}
+        properties: {role: filled-button, text: VOIR SCORES}
         type: Button
-      layout_properties: {full_width_row: false, grid_position: 'YHELYT,YRVYXM'}
+      layout_properties: {grid_position: 'XQQBVL,PSERSF'}
       name: panel_doafter
+      properties: {visible: true}
+      type: ColumnPanel
+    - components:
+      - event_bindings: {click: button_start_click}
+        layout_properties: {grid_position: 'DEYWEB,OZLYUK'}
+        name: button_start
+        properties: {role: filled-button, text: Commencer !}
+        type: Button
+      layout_properties: {grid_position: 'NUKLUP,JNLGKR'}
+      name: panel_alert
       properties: {visible: true}
       type: ColumnPanel
     data_bindings: []
