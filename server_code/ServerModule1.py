@@ -96,28 +96,32 @@ def fetch_quiz_from_url(filename):
     print(f"An error occurred: {err}")
 
 def get_fastest_user_quiz(user, quiz):
-  results =  app_tables.user_quiz.search(
-    tables.order_by("Time", ascending=True),
+  # Get all matching rows
+  results = app_tables.user_quiz.search(
     User=user,
     Quiz=quiz
   )
-  if results:
-    return results[0]['Time']
+  # Filter out rows with None for 'Time'
+  filtered = [r for r in results if r['Time'] is not None]
+  # Sort by 'Time' ascending
+  filtered.sort(key=lambda r: r['Time'])
+  # Return fastest time, or None if no valid times
+  if filtered:
+    return filtered[0]['Time']
   return None
   
 @anvil.server.callable
 def set_score_quiz(data):
-  # extract data
   user  = data['s_user']
   score = data['s-score']
   quiz  = data['s_quiz']
   time  = data['s_time']    
   now   = datetime.utcnow()
-  
-  fastest   = get_fastest_user_quiz(user, quiz)
-  
-  # insert only if faster
-  if fastest and time < fastest:
+
+  fastest = get_fastest_user_quiz(user, quiz)
+
+  # Save only if no record yet, or this time is better (lower)
+  if fastest is None or time < fastest:
     app_tables.user_quiz.add_row(
       User     = user,
       Quiz     = quiz,
@@ -128,19 +132,10 @@ def set_score_quiz(data):
     return {
       "status": "new_record"
     }
-  else: 
-    app_tables.user_quiz.add_row(
-      User     = user,
-      Quiz     = quiz,
-      Score    = score,
-      Time     = time,
-      DateTime = now
-    )
+  else:
     return {
-      "status": "added"
+      "status": "not_best"
     }
-    pass
-
 
 @anvil.server.callable
 def get_score_quiz(quiz):

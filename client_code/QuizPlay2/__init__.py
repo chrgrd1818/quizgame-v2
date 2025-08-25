@@ -36,7 +36,10 @@ class QuizPlay2(QuizPlay2Template):
     self.quiz = self.quiz_data['Quiz']
     self.hasPicts = self.quiz_data['Quiz']['HasPicts']
     self.levels = {int(k): v for k, v in self.quiz_data['QuizDictionary'].items()} if self.quiz_data['QuizDictionary'] else {}
+    for qlist in self.levels.values():
+      random.shuffle(qlist)
     self.level_keys = sorted(self.levels.keys())
+    
     self.progress_shapes = []
 
     # Constants/UI Strings
@@ -74,14 +77,16 @@ class QuizPlay2(QuizPlay2Template):
     self.lbl_question.font_size = 24
     self.timer_chrono.interval = 0
     self.timer_next.interval = 0
-    print("Ui reset")
+    #print("Ui reset")
 
   # --- Game Start/Restart ---
   def button_start_click(self, **event_args):
+    for qlist in self.levels.values():
+      random.shuffle(qlist)
     self.start_game()
 
   def start_game(self):
-    print("start")
+    print("start: " + self.title)
     self.panel_alert.visible = False
     self.panel_quiz.visible = True
     self.panel_play.visible = True
@@ -217,7 +222,7 @@ class QuizPlay2(QuizPlay2Template):
     self.lbl_chrono.text =  min_sec_format
     self.label_result.text = f" {self.GAGNE} {min_sec_format}s"
     self.save_quiz(elapsed)
-    print("end")
+    
 
   def save_quiz(self, elapsed):
     data = {
@@ -227,9 +232,11 @@ class QuizPlay2(QuizPlay2Template):
       's-score': len(self.level_keys)
     }
     saving = anvil.server.call("set_score_quiz", data)
+    print(saving['status'])
     if saving and saving['status'] == "new_record":
       self.label_result.text += "\n" + self.NEW_RECORD
-
+    print("end " + self.title)
+    
   # --- Navigation Buttons ---
   def link_quiz_click(self, **event_args):
     open_form("QuizHome")
