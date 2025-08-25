@@ -7,8 +7,9 @@ import anvil.tables.query as qt
 from anvil.tables import app_tables
 from datetime import datetime
 import random
-from ..TimeHelper import TimeHelper as h
+
 from ..router import go_to, get_current_user
+from ..ChronoHelper import ChronoHelper
 
 class QuizPlay2(QuizPlay2Template):
   def __init__(self, quiz_load, **properties):
@@ -20,12 +21,16 @@ class QuizPlay2(QuizPlay2Template):
     self.CORRECT = "Bravo!"
     self.NOTCORRECT = "Essaye encore!"
     self.GAGNE = "Felicitations! Quiz terminé en"
+    self.NEW_RECORD = "Nouveau record personel!"
     self.IMG_DEFAULT = "_/theme/dummy_img.jpg"
     self.IMG_FOLDER = "_/theme/Picts"
     
-    self.timer_next.interval  = 0
+        
+    # Chrono setup
+    self.chrono = ChronoHelper()
+    self.lbl_chrono.text = "00:00"
     self.timer_chrono.interval = 0
-    self.question_start_time = ""
+    self.timer_next.interval  = 0
 
     self.title = self.quiz_data['Title']
     self.file = self.quiz_data['File']
@@ -40,39 +45,36 @@ class QuizPlay2(QuizPlay2Template):
     self.level_keys.sort()
     self.current_level = self.level_keys[0]
     self.progress_shapes = []
+    
     self.lbl_title.text =  self.title
     self.panel_play.visible = False
     self.panel_doafter.visible = False
     self.panel_alert.visible = True
 
-    ##START GAME
+  ##START GAME
   def button_start_click(self, **event_args):
     self.start_game()
       
   def start_game(self):
+    self.panel_alert.visible = False
+    self.panel_quiz.visible = True
+    
+    self.chrono.start()
     self.timer_chrono.interval = 1
-    self.timer_chrono.enabled = True
-    self.start_time = datetime.utcnow()
+    
     self.current_level_idx = 0
     self.current_q_idx    = 0
-    self.effective_times = []  # Store effective time per question
     self.show_question()
 
   def timer_chrono_tick(self, **event_args):
-    # Sum of all completed questions
-    completed_time = sum(self.effective_times)
-    # Time spent on current question (since question_start_time)
-    current_time = (datetime.utcnow() - self.question_start_time).total_seconds()
-    # Total live elapsed time
-    delta_seconds = int(round(completed_time + current_time))
-    min_sec_format = h.seconds_to_min_sec(delta_seconds)
-    self.lbl_chrono.text = f"{min_sec_format}s"
+    elapsed = self.chrono.get_elapsed()
+    self.lbl_chrono.text = self.chrono.seconds_to_min_sec(elapsed)
 
   def show_question(self):
     if self.current_level_idx >= len(self.level_keys):
       self.complete_quiz()
       return
-    self.question_start_time = datetime.utcnow()
+   
     self.current_level = self.level_keys[self.current_level_idx]
     if self.current_q_idx == 0:
       self.update_progress_panel()
@@ -127,7 +129,7 @@ class QuizPlay2(QuizPlay2Template):
     for _ in questions:
       btn = Button(
         text=" ",
-        font_size = "16",
+        font_size = "18",
         role="btn_progress",
         align="center",
         bold= True,
@@ -154,12 +156,9 @@ class QuizPlay2(QuizPlay2Template):
     else:
       self.feedback_ko()
 
-    self.timer_next.interval  = 0.5
+    self.timer_next.interval  = 0.1
     btn.enabled= True
-    elapsed = (datetime.utcnow() - self.question_start_time).total_seconds()
-    self.effective_times.append(elapsed)
-    print(self.effective_times)
-
+ 
 
   def timer_next_tick(self, **event_args):
     self.timer_next.interval  = 0
@@ -189,11 +188,15 @@ class QuizPlay2(QuizPlay2Template):
     self.current_q_idx = 0
 
   def complete_quiz(self):
-    self.timer_chrono.interval  = 0
-    #elapsed = (datetime.utcnow() - self.start_time).seconds
-    sum_effective_times = int(round(sum(self.effective_times)))
-    min_sec_format = h.seconds_to_min_sec(sum_effective_times)
+    self.image_question.visible = False
+    self.panel_doafter.visible = True
+    self.panel_alert.visible = False
+    self.chrono.stop()
+    self.timer_chrono.interval = 0 
+    elapsed = self.chrono.get_elapsed()
+    min_sec_format = self.chrono.seconds_to_min_sec(elapsed)
     self.lbl_question.text   = f" {self.GAGNE} {min_sec_format}s"
+    
     self.lbl_question.font_size   = 36
     self.lbl_feedback.text   = ""
     self.options_panel.clear() 
@@ -202,11 +205,8 @@ class QuizPlay2(QuizPlay2Template):
     self.progress_panel.clear()
     self.progress_shapes = []
     self.panel_quiz.border="5px solid #FFFFFF"
-    self.image_question.visible = False
-    self.panel_doafter.visible = True
-    self.panel_alert.visible = False
     
-    self.save_quiz(sum_effective_times)
+    self.save_quiz(elapsed)
       
   def save_quiz(self, elapsed):
     data = {
@@ -217,13 +217,16 @@ class QuizPlay2(QuizPlay2Template):
     }
     saving = anvil.server.call("set_score_quiz", data)
     print(saving)
+    if saving and saving['status'] == "new_record":
+      self.lbl_question.text += "\n" + self.NEW_RECORD
 
+  
   def link_quiz_click(self, **event_args):
     open_form("QuizHome")
-
+    
   def button_refaire_click(self, **event_args):
     open_form("QuizCatalogue")
-
+    
   def button_scorepage_click(self, **event_args):
     open_form("Board")
 
