@@ -61,15 +61,19 @@ components_by_slot:
       properties: {visible: true}
       type: ColumnPanel
     - components:
+      - layout_properties: {grid_position: 'BMNIRQ,NPTAJV'}
+        name: label_result
+        properties: {align: center, bold: false, font_size: 36, spacing_above: large, spacing_below: large}
+        type: Label
       - event_bindings: {click: button_refaire_click}
         layout_properties: {grid_position: 'VZZQMC,OPQMVK'}
         name: button_refaire
-        properties: {align: center, role: outlined-button, text: REFAIRE}
+        properties: {align: center, role: filled-button, text: REFAIRE}
         type: Button
       - event_bindings: {click: button_scorepage_click}
         layout_properties: {grid_position: 'YUUZEK,FJJHAK'}
         name: button_scorepage
-        properties: {role: outlined-button, text: VOIR SCORES}
+        properties: {role: filled-button, text: VOIR SCORES}
         type: Button
       layout_properties: {grid_position: 'XQQBVL,PSERSF'}
       name: panel_doafter
